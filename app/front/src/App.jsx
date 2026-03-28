@@ -4,7 +4,7 @@ import { useEffect } from "react";
 
 function App() {
   async function getData() {
-    const data = await fetch("/api/test");
+    const data = await fetch("https://pili.zdep.fr/api/test");
     const json = await data.json();
     setDataState(json);
   }

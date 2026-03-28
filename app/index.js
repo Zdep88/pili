@@ -9,7 +9,7 @@ import websocket from './back/websocket.js';
 const app = express();
 app.use(express.json());
 app.use(express.static('app/public'));
-app.use(cors({ origin: "*" }));
+app.use(cors({}));
 
 // Socket.io :
 // const io = new socketio(app);
