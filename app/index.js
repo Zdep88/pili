@@ -1,12 +1,11 @@
 import 'dotenv/config';
 import express from 'express';
+import routerBack from './back/router.js';
 
 const app = express();
 const port = process.env.PORT
 
-app.use((req, res) => {
-    res.send('Hello World!');
-});
+app.use('/api', routerBack);
 
 app.listen(port, () => {
     console.log('http://localhost:' + port);
