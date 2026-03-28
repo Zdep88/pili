@@ -4,10 +4,11 @@
 	"description": "",
 	"main": "app/index.js",
 	"scripts": {
-		"build": "npm run build:back && npm run build:front",
-		"build:back": "git pull && npm i && cp .env.example .env && sudo nano .env",
-		"build:front": "cd ./app/front && npm run build",
+		"build": "git pull && npm i && cp .env.example .env && sudo nano .env",
+
+		"prestart": "cd ./app/front && npm run build",
 		"start": "node app/index.js",
+
 		"dev": "npm run dev:back",
 		"dev:back": "node --watch app/index.js",
 		"dev:front": "cd ./app/front && npm run dev"
