@@ -3,7 +3,7 @@ import { Router } from "express";
 const router = Router();
 
 router.use((req, res) => {
-    res.status(200).json({ "message": "Hello World!" });
+    res.status(200).json({ "message": "Pili-Pili" });
 });
 
 router.use(errorHandler.notFound);

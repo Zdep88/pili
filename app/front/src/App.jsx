@@ -17,7 +17,6 @@ function App() {
 
 	return <>
     <div className="app">
-      <h1>Pili-Pili</h1>
       <h1>{dataState?.message}</h1>
     </div>
   </>;
