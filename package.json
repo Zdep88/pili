@@ -4,11 +4,9 @@
 	"description": "",
 	"main": "app/index.js",
 	"scripts": {
-		"build": "git pull && npm i && cp .env.example .env && sudo nano .env",
-
+		"build": "git pull && npm i && cp .env.example .env && sudo nano .env && cd ./app/front && npm i",
 		"prestart": "cd ./app/front && npm run build",
 		"start": "node app/index.js",
-
 		"dev": "npm run dev:back",
 		"dev:back": "node --watch app/index.js",
 		"dev:front": "cd ./app/front && npm run dev"
@@ -26,8 +24,10 @@
 	},
 	"homepage": "https://github.com/Zdep88/pili#readme",
 	"dependencies": {
+		"cardian": "^2.0.0",
 		"dotenv": "^17.3.1",
-		"express": "^5.2.1"
+		"express": "^5.2.1",
+		"socket.io": "^4.8.3"
 	},
 	"devDependencies": {
 		"prettier": "^3.8.1"
