@@ -15,7 +15,7 @@ function App() {
     getData();
   }, []);
 
-	return <>
+    return <>
     <div className="app">
       <h1>{dataState?.response}</h1>
     </div>
