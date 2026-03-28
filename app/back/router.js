@@ -2,13 +2,8 @@ import errorHandler from './errorHandler.js';
 import { Router } from "express";
 const router = Router();
 
-router.get("/test", (req, res) => {
-    res.json({ response: "oui cheeeeef" });
-})
-
 router.use((req, res) => {
-    res.send('Hello World!');
-    //res.send("client/build/app.html");
+    res.status(200).json({ "message": "Hello World!" });
 });
 
 router.use(errorHandler.notFound);
