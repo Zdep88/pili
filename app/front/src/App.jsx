@@ -4,7 +4,7 @@ import { useEffect } from "react";
 
 function App() {
   async function getData() {
-    const data = await fetch("https://pili.zdep.fr/api/");
+    const data = await fetch("https://pili.zdep.fr/api");
     const json = await data.json();
     setDataState(json);
   }
@@ -17,7 +17,8 @@ function App() {
 
 	return <>
     <div className="app">
-      <h1>{dataState?.response}</h1>
+      <h1>Pili-Pili</h1>
+      <h1>{dataState?.message}</h1>
     </div>
   </>;
 }
