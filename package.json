@@ -1,31 +1,34 @@
 {
-  "name": "pili",
-  "version": "1.0.0",
-  "description": "",
-  "main": "app/index.js",
-  "scripts": {
-    "build": "git pull && npm i && cp .env.example .env && sudo nano .env",
-    "start": "node app/index.js",
-    "dev": "node --watch app/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Zdep88/pili.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "module",
-  "bugs": {
-    "url": "https://github.com/Zdep88/pili/issues"
-  },
-  "homepage": "https://github.com/Zdep88/pili#readme",
-  "dependencies": {
-    "dotenv": "^17.3.1",
-    "express": "^5.2.1"
-  },
-  "devDependencies": {
-    "prettier": "^3.8.1"
-  }
+	"name": "pili",
+	"version": "1.0.0",
+	"description": "",
+	"main": "app/index.js",
+	"scripts": {
+		"build": "npm run build:back && npm run build:front",
+		"build:back": "git pull && npm i && cp .env.example .env && sudo nano .env",
+		"build:front": "cd ./app/front && npm run build",
+		"start": "node app/index.js",
+		"dev": "npm run dev:back",
+		"dev:back": "node --watch app/index.js",
+		"dev:front": "cd ./app/front && npm run dev"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/Zdep88/pili.git"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"type": "module",
+	"bugs": {
+		"url": "https://github.com/Zdep88/pili/issues"
+	},
+	"homepage": "https://github.com/Zdep88/pili#readme",
+	"dependencies": {
+		"dotenv": "^17.3.1",
+		"express": "^5.2.1"
+	},
+	"devDependencies": {
+		"prettier": "^3.8.1"
+	}
 }
