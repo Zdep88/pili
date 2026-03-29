@@ -1,10 +1,10 @@
 import { useState } from "react";
-import "./App.css";
 import { useEffect } from "react";
+// import "./example.css";
 
-function App() {
+function Example() {
   async function getData() {
-    const data = await fetch("http://localhost:3004/api/test");
+    const data = await fetch("http://localhost:3004/api/");
     const json = await data.json();
     setDataState(json);
   }
@@ -22,4 +22,4 @@ function App() {
   </>;
 }
 
-export default App;
+export default Example;

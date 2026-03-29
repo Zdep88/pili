@@ -29,5 +29,5 @@ app.use((req, res) => {
 });
 
 server.listen(port, () => {
-    console.log('http://localhost:' + port + '/api');
+    console.log('http://localhost:' + port);
 });
