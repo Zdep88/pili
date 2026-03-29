@@ -7,7 +7,7 @@
 		"build": "git pull && npm i && cp .env.example .env && sudo nano .env && cd ./app/front && npm i",
 		"prestart": "cd ./app/front && npm run build",
 		"start": "node app/index.js",
-		"dev": "npm run dev:back",
+		"dev": "npm run prestart && npm run dev:back",
 		"dev:back": "node --watch app/index.js",
 		"dev:front": "cd ./app/front && npm run dev"
 	},

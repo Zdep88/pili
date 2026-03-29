@@ -15,7 +15,7 @@ const authController = {
         if (!response.ok) {
             errorHandler.throw(response.status, data.error);
         }
-        res.status(418).json({
+        res.status(200).json({
             "message": "Connection successful",
             token: data.token
         });
