@@ -32,7 +32,23 @@
             <h1 id="login-title">Connexion</h1>
             <p class="subtitle">Retrouve ton espace personnel Pili-Pili.</p>
 
-            <form class="login-form" action="#" method="post">
+            <form class="login-form" action="#" method="post" onsubmit="{
+                event.preventDefault();
+                const formData = new FormData(event.target);
+                const { name, password } = Object.fromEntries(formData.entries());
+                const response = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, password })
+                });
+                const data = await response.json();
+                console.log(321321321);
+                if (!response.ok) {
+                    alert(data.error);
+                } else {
+                    alert('Connexion réussie !');
+                }
+            }">
                 <div class="form-group">
                     <label for="name">Nom</label>
                     <input id="name" name="name" type="text" autocomplete="username" placeholder="Ton nom" required>
