@@ -1,3 +1,5 @@
+import Header from "../components/Header";
+
 export default function Login() {
 	async function handleSubmit(event) {
 		event.preventDefault();
@@ -23,27 +25,7 @@ export default function Login() {
 		<>
 			<div class="page-bg" aria-hidden="true"></div>
 
-			<header class="top-nav">
-				<a class="brand" href="#" aria-label="Accueil Pili-Pili">
-					<span class="brand-mark" aria-hidden="true">
-						P
-					</span>
-					<span class="brand-text">Pili-Pili</span>
-				</a>
-				<nav aria-label="Navigation principale">
-					<ul class="nav-links">
-						<li>
-							<a href="#">Accueil</a>
-						</li>
-						<li>
-							<a href="#">Concept</a>
-						</li>
-						<li>
-							<a href="#">Aide</a>
-						</li>
-					</ul>
-				</nav>
-			</header>
+			<Header />
 
 			<main class="main-content">
 				<section class="login-card" aria-labelledby="login-title">

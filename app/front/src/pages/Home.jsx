@@ -1,38 +1,10 @@
-import WSClient from "../components/WSClient";
+import Header from "../components/Header";
 
 export default function Home() {
 	return (
 		<>
-			<div className="app">
-				<h1>Pili-Pili</h1>
-			</div>
-
-			<WSClient />
-
 			<div class="page-bg" aria-hidden="true"></div>
-
-			<header class="top-nav">
-				<a class="brand" href="#" aria-label="Accueil Pili-Pili">
-					<span class="brand-mark" aria-hidden="true">
-						P
-					</span>
-					<span class="brand-text">Pili-Pili</span>
-				</a>
-				<nav aria-label="Navigation principale">
-					<ul class="nav-links">
-						<li>
-							<a href="#">Accueil</a>
-						</li>
-						<li>
-							<a href="#">Carte</a>
-						</li>
-						<li>
-							<a href="#">Contact</a>
-						</li>
-					</ul>
-				</nav>
-			</header>
-
+			<Header />
 			<main class="main-content">
 				<section class="home-card" aria-labelledby="home-title">
 					<p class="eyebrow">Univers Pili-Pili</p>
