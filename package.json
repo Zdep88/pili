@@ -4,11 +4,14 @@
 	"description": "",
 	"main": "app/index.js",
 	"scripts": {
-		"build": "git pull && npm i && cp .env.example .env && sudo nano .env && cd ./app/front && npm i",
+		"build": "git pull && npm i && cp .env.example .env && sudo nano .env",
 		"prestart": "cd ./app/front && npm run build",
 		"start": "node app/index.js",
-		"dev": "npm run prestart && npm run dev:back",
-		"dev:back": "node --watch app/index.js",
+
+		"postinstall": "cd ./app/front && npm install",
+        "format": "prettier . --write",
+		"dev": "concurrently 'npm run dev:back' 'npm run dev:front'",
+		"dev:back": "node --watch --env-file=dev.env ./app/index.js",
 		"dev:front": "cd ./app/front && npm run dev"
 	},
 	"repository": {
