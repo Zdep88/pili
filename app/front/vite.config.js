@@ -5,8 +5,10 @@ import react from "@vitejs/plugin-react";
 export default defineConfig({
 	plugins: [react()],
 
+	envDir: "../..", // folder for .env files
+
 	build: {
-		outDir: "../public",
+		outDir: "./dist",
 		emptyOutDir: true,
 	},
 });
