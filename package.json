@@ -9,8 +9,8 @@
 		"start": "node app/back/index.js",
 
 		"postinstall": "concurrently 'npm run install:back' 'npm run install:front'",
-        "install:back": "cd ./app/front && npm install",
-        "install:front": "cd ./app/back && npm install",
+        "install:back": "cd ./app/back && npm install",
+        "install:front": "cd ./app/front && npm install",
 		"format": "prettier . --write",
 		"dev:back": "cd ./app/back && npm run dev",
 		"dev:front": "cd ./app/front && npm run dev",
