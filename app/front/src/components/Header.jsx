@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
+import { NavLink } from "react-router";
 
 function Header() {
 	async function getData() {
@@ -17,19 +17,17 @@ function Header() {
 	return (
 		<>
 			<header class="top-nav">
-				<a class="brand" href="/" aria-label="Accueil Pili-Pili">
-					<span class="brand-mark" aria-hidden="true">
-						P
-					</span>
+				<NavLink to="/" className="brand" aria-label="Accueil Pili-Pili">
+					<span class="brand-mark" aria-hidden="true"></span>
 					<span class="brand-text">Pili-Pili</span>
-				</a>
+				</NavLink>
 				<nav aria-label="Navigation principale">
 					<ul class="nav-links">
 						<li>
-							<a href="/">Accueil</a>
+							<NavLink to="/">Accueil</NavLink>
 						</li>
 						<li>
-							<a href="/login">Login</a>
+							<NavLink to="/login">Login</NavLink>
 						</li>
 					</ul>
 				</nav>
