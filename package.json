@@ -6,13 +6,15 @@
 	"scripts": {
 		"build": "git pull && npm i && cp .env.example .env && sudo nano .env",
 		"prestart": "cd ./app/front && npm run build",
-		"start": "node app/index.js",
+		"start": "node app/back/index.js",
 
-		"postinstall": "cd ./app/front && npm install",
-        "format": "prettier . --write",
-		"dev": "concurrently 'npm run dev:back' 'npm run dev:front'",
-		"dev:back": "node --watch --env-file=dev.env ./app/index.js",
-		"dev:front": "cd ./app/front && npm run dev"
+		"postinstall": "concurrently 'npm run install:back' 'npm run install:front'",
+        "install:back": "cd ./app/front && npm install",
+        "install:front": "cd ./app/back && npm install",
+		"format": "prettier . --write",
+		"dev:back": "cd ./app/back && npm run dev",
+		"dev:front": "cd ./app/front && npm run dev",
+		"dev": "concurrently 'npm run dev:back' 'npm run dev:front'"
 	},
 	"repository": {
 		"type": "git",
@@ -26,13 +28,6 @@
 		"url": "https://github.com/Zdep88/pili/issues"
 	},
 	"homepage": "https://github.com/Zdep88/pili#readme",
-	"dependencies": {
-		"cardian": "^2.0.0",
-		"cors": "^2.8.6",
-		"dotenv": "^17.3.1",
-		"express": "^5.2.1",
-		"socket.io": "^4.8.3"
-	},
 	"devDependencies": {
 		"concurrently": "^9.2.1",
 		"prettier": "^3.8.1"
