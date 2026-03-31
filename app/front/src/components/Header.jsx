@@ -3,7 +3,7 @@ import { NavLink } from "react-router";
 
 function Header() {
 	async function getData() {
-		const data = await fetch("http://localhost:3004/api/");
+		const data = await fetch(`${import.meta.env.VITE_SERVER_URL}/api/`);
 		const json = await data.json();
 		setDataState(json);
 	}

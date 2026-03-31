@@ -211,6 +211,10 @@ body {
 	transition: opacity 160ms ease;
 }
 
+.nav-links a.active {
+	font-weight: bold;
+}
+
 .nav-links a:hover,
 .nav-links a:focus-visible {
 	opacity: 1;

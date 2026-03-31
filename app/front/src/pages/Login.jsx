@@ -6,7 +6,7 @@ export default function Login() {
 		const formData = new FormData(event.target);
 		const { name, password } = Object.fromEntries(formData.entries());
 		console.log("Formulaire soumis - | Name:", name, "| Password:", password);
-		const response = await fetch("/api/login", {
+		const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/api/login`, {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({ name, password }),
