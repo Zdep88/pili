@@ -15,7 +15,7 @@ pili/
             index.js    # point d'entrée principal du back
 
         shared/
-            models/     # classes et modèles de données partagés
+            models/     # classes et modèles de données partagés entre back et front
 
     .env                # fichier d'environnement de prod
     .env.development    # fichier d'environnement de dev
