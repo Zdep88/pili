@@ -16,13 +16,13 @@ function Header() {
 
 	return (
 		<>
-			<header class="top-nav">
+			<header className="top-nav">
 				<NavLink to="/" className="brand" aria-label="Accueil Pili-Pili">
-					<span class="brand-mark" aria-hidden="true"></span>
-					<span class="brand-text">Pili-Pili</span>
+					<span className="brand-mark" aria-hidden="true"></span>
+					<span className="brand-text">Pili-Pili</span>
 				</NavLink>
 				<nav aria-label="Navigation principale">
-					<ul class="nav-links">
+					<ul className="nav-links">
 						<li>
 							<NavLink to="/">Accueil</NavLink>
 						</li>

@@ -23,36 +23,36 @@ export default function Login() {
 
 	return (
 		<>
-			<div class="page-bg" aria-hidden="true"></div>
+			<div className="page-bg" aria-hidden="true"></div>
 
 			<Header />
 
-			<main class="main-content">
-				<section class="login-card" aria-labelledby="login-title">
-					<p class="eyebrow">Bienvenue</p>
+			<main className="main-content">
+				<section className="login-card" aria-labelledby="login-title">
+					<p className="eyebrow">Bienvenue</p>
 					<h1 id="login-title">Connexion</h1>
-					<p class="subtitle">Retrouve ton espace personnel Pili-Pili.</p>
+					<p className="subtitle">Retrouve ton espace personnel Pili-Pili.</p>
 
-					<form class="login-form" method="post" onSubmit={handleSubmit}>
-						<div class="form-group">
-							<label for="name">Nom</label>
+					<form className="login-form" method="post" onSubmit={handleSubmit}>
+						<div className="form-group">
+							<label htmlFor="name">Nom</label>
 							<input
 								id="name"
 								name="name"
 								type="text"
-								autocomplete="name"
+								autoComplete="name"
 								placeholder="Ton nom"
 								required
 							></input>
 						</div>
 
-						<div class="form-group">
-							<label for="password">Mot de passe</label>
+						<div className="form-group">
+							<label htmlFor="password">Mot de passe</label>
 							<input
 								id="password"
 								name="password"
 								type="password"
-								autocomplete="current-password"
+								autoComplete="current-password"
 								placeholder="••••••••"
 								required
 							></input>

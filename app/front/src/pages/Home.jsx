@@ -3,13 +3,13 @@ import Header from "../components/Header";
 export default function Home() {
 	return (
 		<>
-			<div class="page-bg" aria-hidden="true"></div>
+			<div className="page-bg" aria-hidden="true"></div>
 			<Header />
-			<main class="main-content">
-				<section class="home-card" aria-labelledby="home-title">
-					<p class="eyebrow">Univers Pili-Pili</p>
+			<main className="main-content">
+				<section className="home-card" aria-labelledby="home-title">
+					<p className="eyebrow">Univers Pili-Pili</p>
 					<h1 id="home-title">Bienvenue sur la page d'accueil</h1>
-					<p class="random-text">
+					<p className="random-text">
 						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer non velit
 						vitae nunc convallis placerat. Donec ac lorem at dui varius viverra. Sed ut
 						mauris sed arcu maximus luctus in nec mi. Vivamus aliquet, sapien non
@@ -17,7 +17,7 @@ export default function Home() {
 						risus.
 					</p>
 
-					<figure class="hero-media">
+					<figure className="hero-media">
 						<img
 							src="/assets/home-hero.jpg"
 							alt="Illustration ambiance Pili-Pili"
