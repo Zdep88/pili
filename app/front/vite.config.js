@@ -12,8 +12,9 @@ export default defineConfig({
 		alias: {
 			"@shared": path.resolve(import.meta.dirname, "../shared"),
 			components: path.resolve(import.meta.dirname, "src/components"),
-			assets: path.resolve(import.meta.dirname, "src/assets"),
+			layouts: path.resolve(import.meta.dirname, "src/layouts"),
 			pages: path.resolve(import.meta.dirname, "src/pages"),
+			assets: path.resolve(import.meta.dirname, "src/assets"),
 		},
 	},
 

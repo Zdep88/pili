@@ -1,10 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import Layout from "components/Layout.jsx";
-
-import Home from "pages/Home.jsx";
-import Login from "pages/Login.jsx";
-import Rooms from "pages/Rooms.jsx";
+import { Default as Layout } from "layouts";
+import { Home, Login, Rooms } from "pages";
 
 export default function () {
 	return (
