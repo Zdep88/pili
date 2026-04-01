@@ -11,11 +11,7 @@ const port = process.env.SERVER_PORT;
 const server = http.createServer(app);
 
 // Socket.io :
-const io = new Server(server, {
-	cors: {
-		origin: "*",
-	},
-});
+const io = new Server(server, { cors: { origin: "*" } });
 io.on("connection", websocket);
 
 app.use(express.json());

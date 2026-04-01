@@ -17,11 +17,12 @@ export default (socket) => {
 		console.log("a user disconnected:", socket.id);
 	});
 
-	socket.on("message", (message) => {
-		const decodedMessage = JSON.parse(message);
+	socket.on("message", (encodedMessage) => {
+		const message = ServerMessage.receive(encodedMessage);
 
-		switch (decodedMessage.title) {
+		switch (message.title) {
 			case "ping":
+				console.log("ping !");
 				new ServerMessage("pong").send();
 				break;
 

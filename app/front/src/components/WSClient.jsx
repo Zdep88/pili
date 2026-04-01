@@ -44,10 +44,10 @@ export default function WSClient() {
 		console.warn("socket disconnected");
 	}
 
-	function onMessage(message) {
-		const decodedMessage = JSON.parse(message);
+	function onMessage(encodedMessage) {
+		const message = ClientMessage.receive(encodedMessage);
 
-		switch (decodedMessage.title) {
+		switch (message.title) {
 			case "pong":
 				alert("pong !");
 				break;
@@ -75,6 +75,8 @@ export default function WSClient() {
 				<>
 					<p>Connecté</p>
 					<button onClick={disconnect}>Disconnect</button>
+					<br />
+					<button onClick={ping}>Send message</button>
 				</>
 			) : (
 				<>
@@ -82,10 +84,6 @@ export default function WSClient() {
 					<button onClick={connect}>Connect</button>
 				</>
 			)}
-
-			<br />
-
-			<button onClick={ping}>Send message</button>
 		</>
 	);
 }
