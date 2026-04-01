@@ -2,7 +2,7 @@ import { Outlet } from "react-router-dom";
 
 import { Header } from "components";
 
-import "../index.css";
+import "./default.css";
 
 export default function () {
 	return (
