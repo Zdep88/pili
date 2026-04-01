@@ -1,3 +1,11 @@
+import { Image } from "components";
+
 export default function () {
-	return <></>;
+	return (
+		<>
+			<br />
+			<Image name="Cards" />
+			<br />
+		</>
+	);
 }
