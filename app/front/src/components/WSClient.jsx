@@ -1,9 +1,26 @@
 import { useEffect, useState } from "react";
+// import { useLocation } from "react-router-dom";
 
 import { socket } from "../socket.js";
 
+import Message from "@shared/models/Message.js";
+class ClientMessage extends Message {
+	constructor(title, payload) {
+		super(title, payload);
+	}
+
+	send() {
+		socket.send(JSON.stringify(this));
+	}
+}
+
 export default function WSClient() {
 	const [isConnected, setIsConnected] = useState(socket.connected);
+	// const location = useLocation();
+
+	// useEffect(() => {
+	// 	console.log("Location changed");
+	// }, [location]);
 
 	useEffect(() => {
 		socket.on("connect", onConnect);
@@ -27,8 +44,17 @@ export default function WSClient() {
 		console.warn("socket disconnected");
 	}
 
-	function onMessage(data) {
-		console.log("message received:", data);
+	function onMessage(message) {
+		const decodedMessage = JSON.parse(message);
+
+		switch (decodedMessage.title) {
+			case "pong":
+				alert("pong !");
+				break;
+
+			default:
+				throw new Error("Unhandled message:", title);
+		}
 	}
 
 	function connect() {
@@ -39,8 +65,8 @@ export default function WSClient() {
 		socket.disconnect();
 	}
 
-	function message() {
-		socket.send("taraca");
+	function ping() {
+		new ClientMessage("ping").send();
 	}
 
 	return (
@@ -59,7 +85,7 @@ export default function WSClient() {
 
 			<br />
 
-			<button onClick={message}>Message</button>
+			<button onClick={ping}>Send message</button>
 		</>
 	);
 }
