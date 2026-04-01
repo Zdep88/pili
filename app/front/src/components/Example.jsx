@@ -1,8 +1,7 @@
-import { useState } from "react";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 // import "./example.css";
 
-function Example() {
+export default function () {
 	async function getData() {
 		const data = await fetch("http://localhost:3004/api/");
 		const json = await data.json();
@@ -23,5 +22,3 @@ function Example() {
 		</>
 	);
 }
-
-export default Example;

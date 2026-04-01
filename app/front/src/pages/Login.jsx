@@ -1,6 +1,4 @@
-import Header from "components/Header";
-
-export default function Login() {
+export default function () {
 	async function handleSubmit(event) {
 		event.preventDefault();
 		const formData = new FormData(event.target);
@@ -23,45 +21,39 @@ export default function Login() {
 
 	return (
 		<>
-			<div className="page-bg" aria-hidden="true"></div>
+			<section className="login-card" aria-labelledby="login-title">
+				<p className="eyebrow">Bienvenue</p>
+				<h1 id="login-title">Connexion</h1>
+				<p className="subtitle">Retrouve ton espace personnel Pili-Pili.</p>
 
-			<Header />
+				<form className="login-form" method="post" onSubmit={handleSubmit}>
+					<div className="form-group">
+						<label htmlFor="name">Nom</label>
+						<input
+							id="name"
+							name="name"
+							type="text"
+							autoComplete="name"
+							placeholder="Ton nom"
+							required
+						></input>
+					</div>
 
-			<main className="main-content">
-				<section className="login-card" aria-labelledby="login-title">
-					<p className="eyebrow">Bienvenue</p>
-					<h1 id="login-title">Connexion</h1>
-					<p className="subtitle">Retrouve ton espace personnel Pili-Pili.</p>
+					<div className="form-group">
+						<label htmlFor="password">Mot de passe</label>
+						<input
+							id="password"
+							name="password"
+							type="password"
+							autoComplete="current-password"
+							placeholder="••••••••"
+							required
+						></input>
+					</div>
 
-					<form className="login-form" method="post" onSubmit={handleSubmit}>
-						<div className="form-group">
-							<label htmlFor="name">Nom</label>
-							<input
-								id="name"
-								name="name"
-								type="text"
-								autoComplete="name"
-								placeholder="Ton nom"
-								required
-							></input>
-						</div>
-
-						<div className="form-group">
-							<label htmlFor="password">Mot de passe</label>
-							<input
-								id="password"
-								name="password"
-								type="password"
-								autoComplete="current-password"
-								placeholder="••••••••"
-								required
-							></input>
-						</div>
-
-						<button type="submit">Se connecter</button>
-					</form>
-				</section>
-			</main>
+					<button type="submit">Se connecter</button>
+				</form>
+			</section>
 		</>
 	);
 }

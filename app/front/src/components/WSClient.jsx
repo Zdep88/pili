@@ -14,7 +14,7 @@ class ClientMessage extends Message {
 	}
 }
 
-export default function WSClient() {
+export default function () {
 	const [isConnected, setIsConnected] = useState(socket.connected);
 	// const location = useLocation();
 

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { NavLink } from "react-router";
 
-function Header() {
+export default function () {
 	async function getData() {
 		const data = await fetch(`${import.meta.env.VITE_SERVER_URL}/api/`);
 		const json = await data.json();
@@ -29,11 +29,12 @@ function Header() {
 						<li>
 							<NavLink to="/login">Login</NavLink>
 						</li>
+						<li>
+							<NavLink to="/rooms">Rooms</NavLink>
+						</li>
 					</ul>
 				</nav>
 			</header>
 		</>
 	);
 }
-
-export default Header;
