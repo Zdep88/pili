@@ -14,7 +14,7 @@ export default class Message {
 		}
 
 		this.title = title;
-		this.payload = payload;
+		this.payload = payload || {};
 		this.createdAt = new Date().toUTCString();
 	}
 }

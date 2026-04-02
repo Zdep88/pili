@@ -4,23 +4,19 @@ import { useEffect, useState } from "react";
 import { socket } from "../socket.js";
 
 import Message from "@shared/models/Message.js";
-class ClientMessage extends Message {
-	constructor(title, payload) {
-		super(title, payload);
-	}
 
+class ClientMessage extends Message {
 	send() {
 		socket.send(JSON.stringify(this));
+	}
+
+	constructor(title, payload) {
+		super(title, payload);
 	}
 }
 
 export default function () {
 	const [isConnected, setIsConnected] = useState(socket.connected);
-	// const location = useLocation();
-
-	// useEffect(() => {
-	// 	console.log("Location changed");
-	// }, [location]);
 
 	useEffect(() => {
 		socket.on("connect", onConnect);
@@ -45,9 +41,12 @@ export default function () {
 	}
 
 	function onMessage(encodedMessage) {
-		const message = ClientMessage.receive(encodedMessage);
+		const { title, payload } = ClientMessage.receive(encodedMessage);
 
-		switch (message.title) {
+		switch (title) {
+			case "conn_accepted":
+				break;
+
 			case "pong":
 				alert("pong !");
 				break;
