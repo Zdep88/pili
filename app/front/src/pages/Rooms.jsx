@@ -9,8 +9,8 @@ export default function () {
 			<>
 				{use(rooms).map((room) => (
 					<Link key={room.id} to={`/game/${room.id}`}>
-						<div className="box">
-							<span>Room #{room.id}</span>
+						<div className={`room ${room.private ? "private" : ""}`}>
+							<span>{room.name !== undefined ? room.name : `Room #${room.id}`}</span>
 							<span>
 								{room.players}/{room.max}
 							</span>
@@ -35,7 +35,7 @@ export default function () {
                     gap: 2rem;
                 }
 
-                .box {
+                .room {
                     display: flex;
                     flex-direction: column;
                     justify-content: center;
@@ -44,8 +44,17 @@ export default function () {
                     height: 200px;
                     width: 200px;
                     border-radius: 5px;
-                    background-color: rgba(0, 0, 0, 0.8);
                     color: white;
+                    transition: scale 0.25s;
+                    background-color: rgba(2, 170, 227, 0.8);
+
+                    &:hover {
+                        scale: 1.1;
+                    }
+
+                    &.private {
+                        background-color: rgba(0, 0, 0, 0.8);
+                    }
                 }
             `}</style>
 		</>
