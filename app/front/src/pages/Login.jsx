@@ -1,21 +1,24 @@
+import { useNavigate } from "react-router-dom";
+
+import { useFetch } from "hooks";
+
 export default function () {
+	const navigate = useNavigate();
+
 	async function handleSubmit(event) {
 		event.preventDefault();
+
 		const formData = new FormData(event.target);
 		const { name, password } = Object.fromEntries(formData.entries());
-		console.log("Formulaire soumis - | Name:", name, "| Password:", password);
-		const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/api/login`, {
-			method: "POST",
-			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify({ name, password }),
-		});
-		const data = await response.json();
-		console.log("Réponse du serveur:", response);
-		if (!response.ok) {
-			alert("Erreur: " + data.error);
-		} else {
+
+		try {
+			const data = await useFetch("post", "login", { name, password });
+
 			localStorage.setItem("token", data.token);
-			window.location.href = "/";
+
+			navigate("/rooms");
+		} catch (err) {
+			alert("Erreur: " + err.message);
 		}
 	}
 

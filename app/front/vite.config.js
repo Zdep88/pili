@@ -11,7 +11,9 @@ export default defineConfig({
 	resolve: {
 		alias: {
 			"@shared": path.resolve(import.meta.dirname, "../shared"),
+
 			components: path.resolve(import.meta.dirname, "src/components"),
+            hooks: path.resolve(import.meta.dirname, "src/hooks"),
 			layouts: path.resolve(import.meta.dirname, "src/layouts"),
 			pages: path.resolve(import.meta.dirname, "src/pages"),
 			assets: path.resolve(import.meta.dirname, "src/assets"),
