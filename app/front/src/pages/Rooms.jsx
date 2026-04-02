@@ -3,19 +3,24 @@ import { Link } from "react-router-dom";
 
 import { useFetch } from "hooks";
 
+import "styles/rooms.css";
+
 export default function () {
 	function RoomList({ rooms }) {
 		return (
 			<>
 				{use(rooms).map((room) => {
+					const url = `/game/${room.id}`;
 					const name = room.name !== undefined ? room.name : `Room #${room.id}`;
 					const players = `${room.players}/${room.max}`;
-					const privateClass = room.private ? "private" : "";
-					const url = `/game/${room.id}`;
+					const arrClass = ["room"];
+					if (room.private) {
+						arrClass.push("private");
+					}
 
 					return (
 						<Link key={room.id} to={url}>
-							<div className={`room ${privateClass}`}>
+							<div className={arrClass.join(" ")}>
 								<span>{name}</span>
 								<span>{players}</span>
 							</div>
@@ -27,41 +32,10 @@ export default function () {
 	}
 
 	return (
-		<>
-			<div className="rooms">
-				<Suspense fallback={<div>Loading...</div>}>
-					<RoomList rooms={useFetch("GET", "rooms")} />
-				</Suspense>
-			</div>
-
-			<style>{`
-                .rooms {
-                    display: flex;
-                    gap: 2rem;
-                }
-
-                .room {
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: center;
-                    align-items: center;
-                    gap: 0.8em;
-                    height: 200px;
-                    width: 200px;
-                    border-radius: 5px;
-                    color: white;
-                    transition: scale 0.25s;
-                    background-color: rgba(2, 170, 227, 0.8);
-
-                    &:hover {
-                        scale: 1.1;
-                    }
-
-                    &.private {
-                        background-color: rgba(0, 0, 0, 0.8);
-                    }
-                }
-            `}</style>
-		</>
+		<div className="rooms">
+			<Suspense fallback={<div>Loading...</div>}>
+				<RoomList rooms={useFetch("GET", "rooms")} />
+			</Suspense>
+		</div>
 	);
 }

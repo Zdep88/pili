@@ -1,3 +1,5 @@
+import { Image } from "components";
+
 export default function () {
 	return (
 		<>
@@ -12,11 +14,7 @@ export default function () {
 				</p>
 
 				<figure className="hero-media">
-					<img
-						src="/assets/home-hero.jpg"
-						alt="Illustration ambiance Pili-Pili"
-						loading="lazy"
-					></img>
+					<Image name="Cards" alt="Illustration ambiance Pili-Pili" loading="lazy" />
 					<figcaption>
 						Ajoute ton image dans le depot pour personnaliser cette section.
 					</figcaption>

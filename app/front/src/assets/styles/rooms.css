@@ -1,0 +1,26 @@
+.rooms {
+	display: flex;
+	gap: 2rem;
+
+	.room {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		gap: 0.8em;
+		height: 200px;
+		width: 200px;
+		border-radius: 5px;
+		color: white;
+		transition: scale 0.25s;
+		background-color: rgba(2, 170, 227, 0.8);
+
+		&:hover {
+			scale: 1.1;
+		}
+
+		&.private {
+			background-color: rgba(0, 0, 0, 0.8);
+		}
+	}
+}

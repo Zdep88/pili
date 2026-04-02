@@ -16,7 +16,9 @@ export default defineConfig({
 			hooks: path.resolve(import.meta.dirname, "src/hooks"),
 			layouts: path.resolve(import.meta.dirname, "src/layouts"),
 			pages: path.resolve(import.meta.dirname, "src/pages"),
-			assets: path.resolve(import.meta.dirname, "src/assets"),
+
+			images: path.resolve(import.meta.dirname, "src/assets/images"),
+			styles: path.resolve(import.meta.dirname, "src/assets/styles"),
 		},
 	},
 
