@@ -8,7 +8,10 @@ router.get("/", (req, res) => {
 });
 
 router.get("/rooms", (req, res) => {
-	const rooms = [{ id: 58462, private: false, players: 2, max: 6 }]; //! à remplacer par résultats bdd
+	const rooms = [
+		{ id: 58462, private: false, players: 6, max: 8 },
+		{ id: 79001, private: false, players: 2, max: 3 },
+	]; //! à remplacer par résultats bdd
 	res.status(200).json(rooms);
 });
 
