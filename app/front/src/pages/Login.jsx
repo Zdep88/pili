@@ -12,7 +12,7 @@ export default function () {
 		const { name, password } = Object.fromEntries(formData.entries());
 
 		try {
-			const data = await useFetch("post", "login", { name, password });
+			const data = await useFetch("POST", "login", { name, password });
 
 			localStorage.setItem("token", data.token);
 

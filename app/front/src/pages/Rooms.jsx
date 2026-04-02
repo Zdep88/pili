@@ -18,7 +18,7 @@ export default function () {
 		);
 	}
 
-	const fetchRooms = useFetch("get", "rooms");
+	const fetchRooms = useFetch("GET", "rooms");
 
 	return (
 		<>
