@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { NavLink } from "react-router";
+import { NavLink, Link } from "react-router";
 
 export default function () {
 	async function getData() {
@@ -17,10 +17,10 @@ export default function () {
 	return (
 		<>
 			<header className="top-nav">
-				<NavLink to="/" className="brand" aria-label="Accueil Pili-Pili">
+				<Link to="/" className="brand" aria-label="Accueil Pili-Pili">
 					<span className="brand-mark" aria-hidden="true"></span>
 					<span className="brand-text">Pili-Pili</span>
-				</NavLink>
+				</Link>
 				<nav aria-label="Navigation principale">
 					<ul className="nav-links">
 						<li>

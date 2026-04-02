@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import { Default as Layout } from "layouts";
-import { Home, Login, Rooms } from "pages";
+import { Home, Login, Rooms, Err404 } from "pages";
 
 export default function () {
 	return (
@@ -11,6 +11,8 @@ export default function () {
 					<Route index element={<Home />} />
 					<Route path="login" element={<Login />} />
 					<Route path="rooms" element={<Rooms />} />
+
+					<Route path="*" element={<Err404 />} />
 				</Route>
 			</Routes>
 		</BrowserRouter>
