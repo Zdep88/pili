@@ -3,8 +3,9 @@ import cors from "cors";
 import http from "node:http";
 import { Server } from "socket.io";
 
-import routerBack from "./src/router.js";
+import APIRouter from "./src/APIRouter.js";
 import websocket from "./src/websocket.js";
+import session from "./src/session.js";
 
 const app = express();
 const port = process.env.SERVER_PORT;
@@ -16,9 +17,10 @@ io.on("connection", websocket);
 
 app.use(cors());
 app.use(express.json());
-app.use(express.static("app/public"));
+app.use(session);
 
-app.use("/api", routerBack);
+app.use(express.static("app/public"));
+app.use("/api", APIRouter);
 app.use((req, res) => {
 	if (process.env.NODE_ENV === "production") {
 		//! HTTP_301 n'est pas valide car le serveur sert normalement une page html. Ce n'est pas une redirection permanente d'une ressource qui existait à une précédente adresse vers une nouvelle adresse.

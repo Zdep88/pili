@@ -7,6 +7,11 @@ router.get("/", (req, res) => {
 	res.status(200).json({ message: "Pili-Pili" });
 });
 
+router.get("/rooms", (req, res) => {
+	const rooms = [{ id: 58462, private: false, players: 2, max: 6 }]; //! à remplacer par résultats bdd
+	res.status(200).json(rooms);
+});
+
 router.post("/login", authController.login);
 
 router.use(errorHandler.notFound);
