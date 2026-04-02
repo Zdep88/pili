@@ -7,16 +7,21 @@ export default function () {
 	function RoomList({ rooms }) {
 		return (
 			<>
-				{use(rooms).map((room) => (
-					<Link key={room.id} to={`/game/${room.id}`}>
-						<div className={`room ${room.private ? "private" : ""}`}>
-							<span>{room.name !== undefined ? room.name : `Room #${room.id}`}</span>
-							<span>
-								{room.players}/{room.max}
-							</span>
-						</div>
-					</Link>
-				))}
+				{use(rooms).map((room) => {
+					const name = room.name !== undefined ? room.name : `Room #${room.id}`;
+					const players = `${room.players}/${room.max}`;
+					const privateClass = room.private ? "private" : "";
+					const url = `/game/${room.id}`;
+
+					return (
+						<Link key={room.id} to={url}>
+							<div className={`room ${privateClass}`}>
+								<span>{name}</span>
+								<span>{players}</span>
+							</div>
+						</Link>
+					);
+				})}
 			</>
 		);
 	}
