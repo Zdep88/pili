@@ -2,6 +2,10 @@
   "name": "back",
   "private": true,
   "type": "module",
+  "imports": {
+    "#middlewares": "./src/middlewares/index.js",
+    "#controllers": "./src/controllers/index.js"
+  },
   "scripts": {
     "dev": "node --watch --env-file=../../.env.development index.js"
   },

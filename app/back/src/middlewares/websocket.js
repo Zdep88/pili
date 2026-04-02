@@ -1,4 +1,4 @@
-import Message from "../../shared/models/Message.js";
+import Message from "../../../shared/models/Message.js";
 
 export default (socket) => {
 	class ServerMessage extends Message {
@@ -12,15 +12,16 @@ export default (socket) => {
 	}
 
 	console.log("a user connected:", socket.id);
+	new ServerMessage("conn_accepted", { id: socket.id }).send();
 
 	socket.on("disconnect", () => {
 		console.log("a user disconnected:", socket.id);
 	});
 
 	socket.on("message", (encodedMessage) => {
-		const message = ServerMessage.receive(encodedMessage);
+		const { title, payload } = ServerMessage.receive(encodedMessage);
 
-		switch (message.title) {
+		switch (title) {
 			case "ping":
 				console.log("ping !");
 				new ServerMessage("pong").send();

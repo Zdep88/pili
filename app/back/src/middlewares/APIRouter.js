@@ -1,6 +1,7 @@
-import errorHandler from "./errorHandler.js";
-import authController from "./controllers/auth.js";
 import { Router } from "express";
+
+import { auth, errorHandler } from "#controllers";
+
 const router = Router();
 
 router.get("/", (req, res) => {
@@ -15,7 +16,7 @@ router.get("/rooms", (req, res) => {
 	res.status(200).json(rooms);
 });
 
-router.post("/login", authController.login);
+router.post("/login", auth.login);
 
 router.use(errorHandler.notFound);
 router.use(errorHandler.catch);

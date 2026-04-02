@@ -1,4 +1,4 @@
-import errorHandler from "../errorHandler.js";
+import { errorHandler } from "#controllers";
 
 const authController = {
 	login: async (req, res) => {

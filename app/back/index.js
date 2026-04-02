@@ -1,11 +1,9 @@
+import http from "node:http";
 import express from "express";
 import cors from "cors";
-import http from "node:http";
 import { Server } from "socket.io";
 
-import APIRouter from "./src/APIRouter.js";
-import websocket from "./src/websocket.js";
-import session from "./src/session.js";
+import { APIRouter, websocket, session } from "#middlewares";
 
 const app = express();
 const port = process.env.SERVER_PORT;
@@ -14,10 +12,18 @@ const server = http.createServer(app);
 // Socket.io :
 const io = new Server(server, { cors: { origin: "*" } });
 io.on("connection", websocket);
+io.engine.use(session);
 
 app.use(cors());
 app.use(express.json());
 app.use(session);
+
+/* debug only */
+app.use((req, res, next) => {
+	console.log(req.session.id);
+	next();
+});
+/* --- */
 
 app.use(express.static("app/public"));
 app.use("/api", APIRouter);
