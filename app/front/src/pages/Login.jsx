@@ -8,17 +8,17 @@ export default function () {
 	async function handleSubmit(event) {
 		event.preventDefault();
 
-		const formData = new FormData(event.target);
-		const { name, password } = Object.fromEntries(formData.entries());
+		const formData = new FormData(event.currentTarget);
+		const objFormData = Object.fromEntries(formData.entries());
 
 		try {
-			const data = await useFetch("POST", "login", { name, password });
+			const data = await useFetch("POST", "login", objFormData);
 
 			localStorage.setItem("token", data.token);
 
 			navigate("/rooms");
-		} catch (err) {
-			alert("Erreur: " + err.message);
+		} catch (error) {
+			alert("Erreur: " + error.message);
 		}
 	}
 

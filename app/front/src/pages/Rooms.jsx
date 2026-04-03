@@ -43,6 +43,12 @@ export default function () {
 	return (
 		<div className="rooms">
 			<Suspense fallback={<div>Loading...</div>}>
+				<Link to="/game/new">
+					<div className="room new">
+						<span>Créer un salon</span>
+					</div>
+				</Link>
+
 				<RoomList rooms={useFetch("GET", "rooms")} />
 			</Suspense>
 		</div>

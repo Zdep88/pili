@@ -1,0 +1,41 @@
+form {
+	background-color: white;
+	padding: 4em;
+	border-radius: 1em;
+
+	h2 {
+		color: black;
+	}
+
+	.content {
+		display: flex;
+		flex-direction: column;
+		gap: 1em;
+		margin: 2.4em 0;
+
+		fieldset {
+			border: none;
+
+			label.required {
+				&::after {
+					content: " *";
+					color: red;
+					font-weight: bold;
+				}
+			}
+
+			input[type="range"] {
+				margin: 0;
+				padding: 0;
+			}
+
+			ul.range-labels {
+				display: flex;
+				list-style: none;
+				justify-content: space-between;
+				margin: 0;
+				padding: 0 4px;
+			}
+		}
+	}
+}
