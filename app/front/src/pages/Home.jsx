@@ -1,4 +1,4 @@
-import { Image } from "components";
+import { Image, ExempleWebsocket } from "components";
 
 export default function () {
 	return (
@@ -20,6 +20,8 @@ export default function () {
 					</figcaption>
 				</figure>
 			</section>
+
+			<ExempleWebsocket />
 		</>
 	);
 }

@@ -4,17 +4,15 @@ export default class Message {
 	createdAt;
 
 	static receive(encodedMessage) {
-		const { title, payload } = JSON.parse(encodedMessage);
-		return new this(title, payload);
+		return JSON.parse(encodedMessage);
 	}
 
-	constructor(title, payload) {
+	constructor(title) {
 		if (this.constructor === Message) {
 			throw new Error("Message is an abstract class, and therefore cannot be instantiated.");
 		}
 
 		this.title = title;
-		this.payload = payload || {};
 		this.createdAt = new Date().toUTCString();
 	}
 }
