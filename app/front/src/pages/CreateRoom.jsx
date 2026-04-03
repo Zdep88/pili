@@ -1,8 +1,6 @@
-import { Suspense, use, useEffect } from "react";
-import { Link, Navigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 
 import { useFetch } from "hooks";
-import { utils } from "scripts";
 
 import "styles/create-room.css";
 
