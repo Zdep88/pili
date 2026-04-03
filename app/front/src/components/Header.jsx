@@ -30,7 +30,7 @@ export default function () {
 							<NavLink to="/login">Login</NavLink>
 						</li>
 						<li>
-							<NavLink to="/rooms">Rooms</NavLink>
+							<NavLink to="/games">Games</NavLink>
 						</li>
 					</ul>
 				</nav>

@@ -19,10 +19,6 @@
 			scale: 1.1;
 		}
 
-		&.private {
-			background-color: rgba(0, 0, 0, 0.8);
-		}
-
 		&.new {
 			background-color: rgba(0, 179, 86, 0.8);
 		}

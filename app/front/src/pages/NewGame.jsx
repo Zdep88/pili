@@ -2,7 +2,7 @@ import { Navigate, useNavigate } from "react-router-dom";
 
 import { useFetch } from "hooks";
 
-import "styles/create-room.css";
+import "styles/newGame.css";
 
 export default function () {
 	const isLogged = !undefined; //! à changer
@@ -15,13 +15,14 @@ export default function () {
 		const objFormData = Object.fromEntries(formData.entries());
 
 		try {
-			const data = await useFetch("POST", "create-room", objFormData);
+			const data = await useFetch("POST", "games/create", objFormData);
 
-			if (!data.success) {
+			if (!data.created) {
+				console.error(data);
 				throw new Error("Unexpected servor error");
 			}
 
-			navigate(`/game/${data.id}`);
+			navigate(`/games/${data.id}`);
 		} catch (error) {
 			alert("Erreur: " + error.message);
 		}
@@ -38,7 +39,7 @@ export default function () {
 					<label className="required" htmlFor="create-room-name">
 						Nom du salon :
 					</label>
-					<input type="text" id="create-room-name" name="name" required={true} />
+					<input type="text" id="create-room-name" name="name" required />
 				</fieldset>
 
 				<fieldset>

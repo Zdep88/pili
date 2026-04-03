@@ -2,9 +2,8 @@ import { Suspense, use } from "react";
 import { Link } from "react-router-dom";
 
 import { useFetch } from "hooks";
-import { utils } from "scripts";
 
-import "styles/rooms.css";
+import "styles/games.css";
 
 export default function () {
 	function askToJoin(event) {
@@ -15,10 +14,10 @@ export default function () {
 		// event.preventDefault();
 	}
 
-	function Room({ url, name, players, isPrivate }) {
+	function Room({ url, name, players }) {
 		return (
 			<Link to={url} onClick={askToJoin}>
-				<div className={utils.makeClassName("room", ["private", isPrivate])}>
+				<div className="room">
 					<span>{name}</span>
 					<span>{players}</span>
 				</div>
@@ -30,7 +29,7 @@ export default function () {
 		return (
 			<>
 				{use(rooms).map((room) => {
-					const url = `/game/${room.id}`;
+					const url = `/games/${room.id}`;
 					const name = room.name !== undefined ? room.name : `Room #${room.id}`;
 					const players = `${room.players}/${room.max}`;
 
@@ -51,13 +50,13 @@ export default function () {
 	return (
 		<div className="rooms">
 			<Suspense fallback={<div>Loading...</div>}>
-				<Link to="/game/new" onClick={askToCreate}>
+				<Link to="/games/new" onClick={askToCreate}>
 					<div className="room new">
 						<span>Créer un salon</span>
 					</div>
 				</Link>
 
-				<RoomList rooms={useFetch("GET", "rooms")} />
+				<RoomList rooms={useFetch("GET", "games")} />
 			</Suspense>
 		</div>
 	);

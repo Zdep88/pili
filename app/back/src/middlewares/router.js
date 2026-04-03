@@ -11,7 +11,7 @@ router.get("/", (req, res) => {
 router.post("/login", auth.login);
 
 router.get("/games", game.getAll);
-router.post("/create-room", game.create);
+router.post("/games/create", game.create);
 
 router.use(errorHandler.notFound);
 router.use(errorHandler.catch);
