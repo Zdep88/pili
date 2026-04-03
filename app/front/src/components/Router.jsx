@@ -11,7 +11,7 @@ export default function () {
 					<Route index element={<Home />} />
 
 					<Route path="login" element={<Login />} />
-                    
+
 					<Route path="rooms" element={<Rooms />} />
 
 					<Route path="game/new" element={<CreateRoom />} />

@@ -8,7 +8,7 @@ export default function () {
 	return (
 		<>
 			<div className="page-bg" aria-hidden="true"></div>
-            
+
 			<Header />
 
 			<main className="main-content">

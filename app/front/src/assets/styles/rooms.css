@@ -23,8 +23,8 @@
 			background-color: rgba(0, 0, 0, 0.8);
 		}
 
-        &.new {
+		&.new {
 			background-color: rgba(0, 179, 86, 0.8);
-        }
+		}
 	}
 }
