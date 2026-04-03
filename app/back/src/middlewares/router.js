@@ -10,7 +10,7 @@ router.get("/", (req, res) => {
 
 router.post("/login", auth.login);
 
-router.get("/rooms", game.index);
+router.get("/games", game.getAll);
 router.post("/create-room", game.create);
 
 router.use(errorHandler.notFound);

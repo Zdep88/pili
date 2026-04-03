@@ -1,7 +1,7 @@
 import { errorHandler } from "#controllers";
 
 export default {
-	index: async (req, res) => {
+	getAll: async (req, res) => {
 		const rooms = [
 			{ id: 58462, name: "Les noobasses", private: false, players: 6, max: 8 },
 			{ id: 79001, name: "Brelan !", private: true, players: 2, max: 3 },
