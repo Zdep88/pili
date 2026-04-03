@@ -2,14 +2,10 @@ import Message from "../../../shared/models/Message.js";
 
 export default (socket) => {
 	class ServerMessage extends Message {
-		send(payload) {
-			const messageWithPayload = Object.assign(this, { payload });
-
-			socket.send(JSON.stringify(messageWithPayload));
-		}
-
 		constructor(title) {
 			super(title);
+
+            super.socket = socket;
 		}
 	}
 

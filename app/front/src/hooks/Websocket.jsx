@@ -6,12 +6,10 @@ import Message from "@shared/models/Message.js";
 const socket = io(import.meta.env.VITE_SERVER_URL);
 
 class ClientMessage extends Message {
-	send(payload) {
-		socket.send(JSON.stringify(Object.assign(this, { payload })));
-	}
+	constructor(title) {
+		super(title);
 
-	constructor(title, payload) {
-		super(title, payload);
+		super.socket = socket;
 	}
 }
 

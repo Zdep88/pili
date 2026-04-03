@@ -11,9 +11,5 @@ export default function () {
 		ws.send("ping");
 	}
 
-	return (
-		<>
-			<button onClick={ping}>Ping server</button>
-		</>
-	);
+	return <button onClick={ping}>Ping server</button>;
 }
