@@ -1,22 +1,23 @@
 import { useEffect, useState } from "react";
 // import { useLocation } from "react-router-dom";
 
-import { socket } from "../socket.js";
+import { useSocket } from "hooks";
 
 import Message from "@shared/models/Message.js";
 
-class ClientMessage extends Message {
-	send() {
-		socket.send(JSON.stringify(this));
-	}
-
-	constructor(title, payload) {
-		super(title, payload);
-	}
-}
-
 export default function () {
+	const socket = useSocket();
 	const [isConnected, setIsConnected] = useState(socket.connected);
+
+	class ClientMessage extends Message {
+		send() {
+			socket.send(JSON.stringify(this));
+		}
+
+		constructor(title, payload) {
+			super(title, payload);
+		}
+	}
 
 	useEffect(() => {
 		socket.on("connect", onConnect);
