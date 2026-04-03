@@ -4,7 +4,7 @@
 	"description": "",
 	"main": "app/index.js",
 	"scripts": {
-		"build": "git pull && npm i && cp .env.example .env && sudo nano .env",
+		"build": "bash ./app/bash/build.sh",
 		"prestart": "cd ./app/front && npm run build",
 		"start": "node app/back/index.js",
 		"postinstall": "concurrently 'npm run install:back' 'npm run install:front'",
