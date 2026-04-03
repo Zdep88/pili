@@ -7,9 +7,17 @@ import { utils } from "scripts";
 import "styles/rooms.css";
 
 export default function () {
+	function askToJoin(event) {
+		// event.preventDefault();
+	}
+
+	function askToCreate(event) {
+		// event.preventDefault();
+	}
+
 	function Room({ url, name, players, isPrivate }) {
 		return (
-			<Link to={url}>
+			<Link to={url} onClick={askToJoin}>
 				<div className={utils.makeClassName("room", ["private", isPrivate])}>
 					<span>{name}</span>
 					<span>{players}</span>
@@ -43,7 +51,7 @@ export default function () {
 	return (
 		<div className="rooms">
 			<Suspense fallback={<div>Loading...</div>}>
-				<Link to="/game/new">
+				<Link to="/game/new" onClick={askToCreate}>
 					<div className="room new">
 						<span>Créer un salon</span>
 					</div>

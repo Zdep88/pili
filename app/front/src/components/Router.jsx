@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import { Default as Layout } from "layouts";
-import { Home, Login, Rooms, CreateRoom, Err404 } from "pages";
+import { Home, Login, Rooms, CreateRoom, Lobby, Err404 } from "pages";
 
 export default function () {
 	return (
@@ -9,9 +9,13 @@ export default function () {
 			<Routes>
 				<Route path="/" element={<Layout />}>
 					<Route index element={<Home />} />
+
 					<Route path="login" element={<Login />} />
+                    
 					<Route path="rooms" element={<Rooms />} />
+
 					<Route path="game/new" element={<CreateRoom />} />
+					<Route path="game/:roomId" element={<Lobby />} />
 
 					<Route path="*" element={<Err404 />} />
 				</Route>
