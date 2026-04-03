@@ -5,12 +5,12 @@ export default (socket) => {
 		constructor(title) {
 			super(title);
 
-            super.socket = socket;
+			super.socket = socket;
 		}
 	}
 
 	console.log("a user connected:", socket.id);
-	new ServerMessage("conn_accepted", { id: socket.id }).send();
+	new ServerMessage("conn_accepted").send({ id: socket.id });
 
 	socket.on("disconnect", () => {
 		console.log("a user disconnected:", socket.id);
