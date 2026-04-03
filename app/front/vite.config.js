@@ -19,6 +19,7 @@ export default defineConfig({
 
 			images: path.resolve(import.meta.dirname, "src/assets/images"),
 			styles: path.resolve(import.meta.dirname, "src/assets/styles"),
+			scripts: path.resolve(import.meta.dirname, "src/assets/scripts"),
 		},
 	},
 
