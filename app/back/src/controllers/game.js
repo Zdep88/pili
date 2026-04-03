@@ -12,6 +12,9 @@ export default {
 	},
 
 	create: async (req, res, next) => {
-		errorHandler.throw(418, "théière");
+		res.status(200).json({
+			created: true,
+			id: 11789,
+		});
 	},
 };

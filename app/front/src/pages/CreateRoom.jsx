@@ -1,4 +1,4 @@
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 
 import { useFetch } from "hooks";
 
@@ -6,6 +6,7 @@ import "styles/create-room.css";
 
 export default function () {
 	const isLogged = !undefined; //! à changer
+	const navigate = useNavigate();
 
 	async function submitForm(event) {
 		event.preventDefault();
@@ -15,6 +16,12 @@ export default function () {
 
 		try {
 			const data = await useFetch("POST", "create-room", objFormData);
+
+			if (!data.success) {
+				throw new Error("Unexpected servor error");
+			}
+
+			navigate(`/game/${data.id}`);
 		} catch (error) {
 			alert("Erreur: " + error.message);
 		}
