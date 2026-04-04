@@ -4,16 +4,20 @@
 	"description": "",
 	"main": "app/index.js",
 	"scripts": {
-		"build": "git pull && npm i && cp .env.example .env && sudo nano .env",
-		"prestart": "cd ./app/front && npm run build",
-		"start": "node app/back/index.js",
+		"build": "bash ./app/bash/build.sh",
+
+        "prestart": "cd ./app/front && npm run build",
+		"start": "cd app/back && node --env-file=../../.env index.js",
+
 		"postinstall": "concurrently 'npm run install:back' 'npm run install:front'",
 		"install:back": "cd ./app/back && npm install",
 		"install:front": "cd ./app/front && npm install",
-		"format": "prettier . --write",
+
 		"dev:back": "cd ./app/back && npm run dev",
 		"dev:front": "cd ./app/front && npm run dev",
-		"dev": "concurrently 'npm run dev:back' 'npm run dev:front'"
+		"dev": "concurrently 'npm run dev:back' 'npm run dev:front'",
+
+		"format": "prettier . --write"
 	},
 	"repository": {
 		"type": "git",

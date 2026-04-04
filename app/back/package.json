@@ -7,7 +7,7 @@
     "#controllers": "./src/controllers/index.js"
   },
   "scripts": {
-    "dev": "node --watch --env-file=../../.env.development index.js"
+    "dev": "node --watch --env-file=../../.env index.js"
   },
   "dependencies": {
     "cardian": "^2.0.1",
