@@ -17,7 +17,7 @@ export function makeClassName(...args) {
 			continue;
 		}
 
-		throw new Error("Unsupported type.");
+		throw new Error(`Unsupported type: ${arg.constructor.name}`);
 	}
 
 	return arrClasses.join(" ");

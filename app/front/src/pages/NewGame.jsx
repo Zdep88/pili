@@ -17,7 +17,7 @@ export default function () {
 		try {
 			const data = await useFetch("POST", "games/create", objFormData);
 
-			if (!data.created) {
+			if (data.message === undefined) {
 				console.error(data);
 				throw new Error("Unexpected servor error");
 			}

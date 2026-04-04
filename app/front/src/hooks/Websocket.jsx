@@ -8,6 +8,8 @@ const socket = io(import.meta.env.VITE_SERVER_URL);
 class WebsocketMessageHandler {
 	handledMessages = new Map();
 
+    socket = socket;
+
 	on(event, listener) {
 		this.handledMessages.set(event, listener);
 	}
@@ -15,17 +17,23 @@ class WebsocketMessageHandler {
 	send(title, payload) {
 		new Message(title).loadWith(payload).sendTo(socket);
 	}
+
+	off(event, listener) {
+		if (this.handledMessages.get(event) === listener) {
+			this.handledMessages.delete(event);
+		}
+	}
 }
 
 export default function () {
 	function onConnect() {
 		// setIsConnected(true);
-		console.warn("socket connected");
+		// console.warn("socket connected");
 	}
 
 	function onDisconnect() {
 		// setIsConnected(false);
-		console.warn("socket disconnected");
+		// console.warn("socket disconnected");
 	}
 
 	function onMessage(encodedMessage) {
@@ -39,7 +47,7 @@ export default function () {
 			return;
 		}
 
-		throw new Error("Unhandled message:", title);
+		throw new Error(`Unhandled message: ${title}`);
 	}
 
 	// const [isConnected, setIsConnected] = useState(socket.connected);
@@ -47,13 +55,13 @@ export default function () {
 
 	useEffect(() => {
 		socket.on("connect", onConnect);
-		socket.on("disconnect", onDisconnect);
 		socket.on("message", onMessage);
+		socket.on("disconnect", onDisconnect);
 
 		return () => {
 			socket.off("connect", onConnect);
-			socket.off("disconnect", onDisconnect);
 			socket.off("message", onMessage);
+			socket.off("disconnect", onDisconnect);
 		};
 	}, []);
 

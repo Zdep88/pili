@@ -1,0 +1,31 @@
+.share {
+	display: flex;
+	align-items: center;
+	margin-bottom: 5em;
+
+	.link {
+		background: #fffdf7;
+		border: 1px solid rgba(31, 26, 23, 0.18);
+		border-radius: 12px;
+		color: var(--charcoal);
+		cursor: pointer;
+		padding: 0.8rem 0.85rem;
+		font: inherit;
+		user-select: none;
+	}
+}
+
+.player-list {
+	background-color: pink;
+	border-radius: 5px;
+	height: 500px;
+	min-width: 200px;
+	list-style: none;
+	padding: 4px;
+	margin: 0;
+
+	li {
+		padding: 0.4em 1em;
+		background-color: white;
+	}
+}

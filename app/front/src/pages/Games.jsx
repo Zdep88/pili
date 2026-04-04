@@ -11,13 +11,13 @@ export default function () {
 	const ws = useWebsocket();
 
 	useEffect(() => {
+		ws.on("games_list", ({ games }) => {
+			console.log("game list updated");
+			setRooms(games);
+		});
+
 		ws.send("enter_hall");
 	}, []);
-
-	ws.on("games_list", ({ games }) => {
-		console.log("game list updated");
-		setRooms(games);
-	});
 
 	function Room({ url, name, players }) {
 		return (
