@@ -18,7 +18,7 @@ export default function () {
 		return () => {
 			socket.off("games_list", onGameList);
 		};
-	}, []);
+	}, [socket]);
 
 	function onGameList({ games }) {
 		console.log("game list updated");

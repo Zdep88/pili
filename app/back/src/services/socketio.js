@@ -79,12 +79,6 @@ function onConnection(socket) {
 
 		io.to(room).emit("user_join", { username });
 
-		let test = await io.in(room).fetchSockets();
-		console.log(
-			"all players present:",
-			test.map((soc) => soc.id),
-		);
-
 		return;
 	}
 

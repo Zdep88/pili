@@ -23,7 +23,7 @@ export default function () {
 			socket.off("user_join", onUserJoin);
 			socket.off("user_leave", onUserLeave);
 		};
-	}, []);
+	}, [socket]);
 
 	function onUserJoin({ username }) {
 		console.log(username, "joined lobby");
