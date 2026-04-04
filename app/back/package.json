@@ -4,7 +4,8 @@
   "type": "module",
   "imports": {
     "#middlewares": "./src/middlewares/index.js",
-    "#controllers": "./src/controllers/index.js"
+    "#controllers": "./src/controllers/index.js",
+    "#services": "./src/services/index.js"
   },
   "scripts": {
     "dev": "node --watch --env-file=../../.env index.js"

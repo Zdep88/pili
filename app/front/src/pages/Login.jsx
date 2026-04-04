@@ -16,7 +16,7 @@ export default function () {
 
 			localStorage.setItem("token", data.token);
 
-			navigate("/rooms");
+			navigate("/games");
 		} catch (error) {
 			alert("Erreur: " + error.message);
 		}

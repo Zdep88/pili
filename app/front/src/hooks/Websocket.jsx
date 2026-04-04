@@ -5,14 +5,6 @@ import Message from "@shared/models/Message.js";
 
 const socket = io(import.meta.env.VITE_SERVER_URL);
 
-class ClientMessage extends Message {
-	constructor(title) {
-		super(title);
-
-		super.socket = socket;
-	}
-}
-
 class WebsocketMessageHandler {
 	handledMessages = new Map();
 
@@ -21,7 +13,7 @@ class WebsocketMessageHandler {
 	}
 
 	send(title, payload) {
-		new ClientMessage(title).send(payload);
+		new Message(title).loadWith(payload).sendTo(socket);
 	}
 }
 
@@ -37,7 +29,7 @@ export default function () {
 	}
 
 	function onMessage(encodedMessage) {
-		const { title, payload } = ClientMessage.receive(encodedMessage);
+		const { title, payload } = Message.unpack(encodedMessage);
 
 		if (ws.handledMessages.has(title)) {
 			return ws.handledMessages.get(title)(payload);

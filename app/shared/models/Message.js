@@ -1,33 +1,34 @@
 export default class Message {
-	#socket;
-	set socket(socketio) {
-		this.#socket = socketio;
-	}
-
 	title;
 	payload;
-	createdAt;
 
-	static receive(encodedMessage) {
+	static unpack(encodedMessage) {
 		return JSON.parse(encodedMessage);
 	}
 
-	send(payload) {
-		if (this.#socket === undefined) {
-			throw new Error("Message.socket is not defined.");
-		}
-
-		const messageWithPayload = Object.assign(this, { payload });
-
-		this.#socket.send(JSON.stringify(messageWithPayload));
+	constructor(title) {
+		this.title = title;
 	}
 
-	constructor(title) {
-		if (this.constructor === Message) {
-			throw new Error("Message is an abstract class, and therefore cannot be instantiated.");
+	loadWith(payload) {
+		this.payload = payload;
+
+		return this;
+	}
+
+	pack() {
+		return JSON.stringify({
+			title: this.title,
+			payload: this.payload,
+			sentAt: new Date().toUTCString(),
+		});
+	}
+
+	sendTo(target) {
+		if (target?.emit === undefined) {
+			throw new Error(`Invalid target for message: ${target}`);
 		}
 
-		this.title = title;
-		this.createdAt = new Date().toUTCString();
+		target.emit("message", this.pack());
 	}
 }
