@@ -6,7 +6,7 @@
 	"scripts": {
 		"build": "bash ./app/bash/build.sh",
 		"prestart": "cd ./app/front && npm run build",
-		"start": "node app/back/index.js",
+		"start": "cd app/back && node --env-file=../../.env index.js",
 		"postinstall": "concurrently 'npm run install:back' 'npm run install:front'",
 		"install:back": "cd ./app/back && npm install",
 		"install:front": "cd ./app/front && npm install",

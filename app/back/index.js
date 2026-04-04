@@ -18,10 +18,10 @@ app.use(cors());
 app.use(express.json());
 app.use(session);
 
-app.use(express.static("app/front/dist"));
+app.use(express.static("../front/dist"));
 app.use("/api", router);
 app.use((req, res) => {
-	res.status(200).sendFile("index.html", { root: "./app/front/dist" });
+	res.status(200).sendFile("index.html", { root: "../front/dist" });
 });
 
 server.listen(port, () => {
