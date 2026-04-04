@@ -1,64 +1,8 @@
 import { Server } from "socket.io";
 
-import { errorHandler, game } from "#controllers";
-
-import Message from "../../../shared/models/Message.js";
+import { game } from "#controllers";
 
 let io;
-
-function connectionHandler(socket) {
-	const controller = {
-		ping: () => {
-			console.log("ping !");
-			socket.send(new Message("pong").pack());
-
-			return;
-		},
-
-		enter_hall: async () => {
-			socket.join("hall");
-
-			const games = await game.getAll();
-
-			new Message("games_list").loadWith({ games }).sendTo(socket);
-
-			return;
-		},
-
-		enter_room: async ({ room }) => {
-			socket.leave("hall");
-			socket.join(room);
-
-			const username = socket.id;
-			new Message("user_join").loadWith({ username }).sendTo(io.to(room));
-
-			let test = await io.in(room).fetchSockets();
-			console.log(
-				"all players present:",
-				test.map((soc) => soc.id),
-			);
-
-			return;
-		},
-	};
-
-	socket.join(socket.request.session.id); //? on inscrit le socket dans un salon nommé d'après son sessionId, pour pouvoir le déconnecter plus tard même sans le socket
-	console.log("a user connected:", socket.id);
-
-	socket.on("message", (encodedMessage) => {
-		const { title, payload } = Message.unpack(encodedMessage);
-
-		if (Object.keys(controller).includes(title)) {
-			controller[title](payload);
-		} else {
-			errorHandler.throw(404, `message title not found: ${title}`);
-		}
-	});
-
-	socket.on("disconnect", () => {
-		console.log("a user disconnected:", socket.id);
-	});
-}
 
 export default {
 	init: (server) => {
@@ -70,7 +14,7 @@ export default {
 			cors: { origin: "*" },
 			connectionStateRecovery: {},
 		});
-		io.on("connection", connectionHandler);
+		io.on("connection", onConnection);
 		io.of("/").adapter.on("join-room", (room, id) => {
 			console.log(`socket ${id} has joined room ${room}`);
 		});
@@ -80,7 +24,7 @@ export default {
 			const username = id;
 
 			if (room !== "hall") {
-				new Message("user_leave").loadWith({ username }).sendTo(io.to(room));
+				io.to(room).emit("user_leave", { username });
 			}
 		});
 
@@ -95,3 +39,61 @@ export default {
 		return io;
 	},
 };
+
+function onConnection(socket) {
+	socket.join(socket.request.session.id);
+	//? on inscrit le socket dans un salon nommé d'après son sessionId, pour pouvoir le déconnecter plus tard même sans le socket
+	console.log("a user connected:", socket.id);
+
+	socket.on("ping", onPing);
+	socket.on("enter_hall", onEnterHall);
+	socket.on("enter_room", onEnterRoom);
+	socket.on("leave_room", onLeaveRoom);
+
+	socket.on("disconnect", () => {
+		console.log("a user disconnected:", socket.id);
+	});
+
+	function onPing() {
+		console.log("ping !");
+		socket.emit("pong");
+
+		return;
+	}
+
+	async function onEnterHall() {
+		socket.join("hall");
+
+		const games = await game.getAll();
+
+		socket.emit("games_list", { games });
+
+		return;
+	}
+
+	async function onEnterRoom({ room }) {
+		socket.leave("hall");
+		socket.join(room);
+
+		const username = socket.id;
+
+		io.to(room).emit("user_join", { username });
+
+		let test = await io.in(room).fetchSockets();
+		console.log(
+			"all players present:",
+			test.map((soc) => soc.id),
+		);
+
+		return;
+	}
+
+	async function onLeaveRoom({ room }) {
+		socket.leave(room);
+
+		const username = socket.id; //! à changer
+		io.to(room).emit("user_leave", { username });
+
+		return;
+	}
+}

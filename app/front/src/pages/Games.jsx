@@ -8,16 +8,22 @@ import "styles/games.css";
 export default function () {
 	const [rooms, setRooms] = useState([]);
 
-	const ws = useWebsocket();
+	const socket = useWebsocket();
 
 	useEffect(() => {
-		ws.on("games_list", ({ games }) => {
-			console.log("game list updated");
-			setRooms(games);
-		});
+		socket.on("games_list", onGameList);
 
-		ws.send("enter_hall");
+		socket.emit("enter_hall");
+
+		return () => {
+			socket.off("games_list", onGameList);
+		};
 	}, []);
+
+	function onGameList({ games }) {
+		console.log("game list updated");
+		setRooms(games);
+	}
 
 	function Room({ url, name, players }) {
 		return (

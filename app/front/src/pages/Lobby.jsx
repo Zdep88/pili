@@ -5,28 +5,35 @@ import { useWebsocket } from "hooks";
 import "styles/lobby.css";
 
 export default function () {
-	const [players, setPlayers] = useState([]);
-
-	const ws = useWebsocket();
-
 	const roomId = window.location.href.split("/").at(-1);
 
+	const [players, setPlayers] = useState([]);
+
+	const socket = useWebsocket();
+
 	useEffect(() => {
-		ws.on("user_join", ({ username }) => {
-			console.log(username, "joined lobby");
-			setPlayers((players) => [...players, username]);
-		});
+		socket.on("user_join", onUserJoin);
+		socket.on("user_leave", onUserLeave);
 
-		ws.on("user_leave", ({ username }) => {
-			alert("ok");
-		});
-
-		ws.send("enter_room", { room: roomId });
+		socket.emit("enter_room", { room: roomId });
 
 		return () => {
-			ws.socket.off("message");
+			socket.emit("leave_room", { room: roomId });
+
+			socket.off("user_join", onUserJoin);
+			socket.off("user_leave", onUserLeave);
 		};
 	}, []);
+
+	function onUserJoin({ username }) {
+		console.log(username, "joined lobby");
+		setPlayers((players) => [...players, username]);
+	}
+
+	function onUserLeave({ username }) {
+		console.log(username, "left lobby");
+		setPlayers((players) => players.filter((player) => player !== username));
+	}
 
 	function copyUrl(event) {
 		navigator.clipboard.writeText(event.currentTarget.textContent).then(() => {

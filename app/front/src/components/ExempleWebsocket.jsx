@@ -1,18 +1,30 @@
+import { useEffect } from "react";
+
 import { useWebsocket } from "hooks";
 
 export default function () {
-	const ws = useWebsocket();
+	const socket = useWebsocket();
 
-	ws.on("conn_accepted", (data) => {
-		console.log(data);
-	});
+	useEffect(() => {
+		socket.on("conn_accepted", onConnAccepted);
+		socket.on("pong", onPong);
 
-	ws.on("pong", () => {
+		return () => {
+			socket.off("conn_accepted", onConnAccepted);
+			socket.off("pong", onPong);
+		};
+	}, []);
+
+	function onPong() {
 		alert("pong");
-	});
+	}
+
+	function onConnAccepted(data) {
+		console.log(data);
+	}
 
 	function ping() {
-		ws.send("ping");
+		socket.emit("ping");
 	}
 
 	return <button onClick={ping}>Ping server</button>;

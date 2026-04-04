@@ -1,8 +1,6 @@
 import { socketio } from "#services";
 import { errorHandler } from "#controllers";
 
-import Message from "../../../shared/models/Message.js";
-
 const controller = {
 	getAll: async () => {
 		const rooms = [
@@ -15,12 +13,12 @@ const controller = {
 	},
 
 	create: async (req, res, next) => {
-		//! création à faire
+		//! création bdd à faire
 
 		const games = await controller.getAll();
 
 		const io = socketio.io();
-		new Message("games_list").loadWith({ games }).sendTo(io.to("hall"));
+		io.to("hall").emit("games_list", { games });
 
 		res.status(200).json({
 			created: true,
