@@ -5,6 +5,9 @@ const socket = io(import.meta.env.VITE_SERVER_URL);
 
 export default function () {
 	useEffect(() => {
+		function onConnect() {}
+		function onDisconnect() {}
+
 		socket.on("connect", onConnect);
 		socket.on("disconnect", onDisconnect);
 
@@ -13,9 +16,6 @@ export default function () {
 			socket.off("disconnect", onDisconnect);
 		};
 	}, [socket]);
-
-	function onConnect() {}
-	function onDisconnect() {}
 
 	return socket;
 }

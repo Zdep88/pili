@@ -12,6 +12,10 @@ export default function () {
 
 	const socket = useWebsocket();
 	useEffect(() => {
+		function onPlayersUpdate(players) {
+			setPlayers(players);
+		}
+
 		socket.on("players_update", onPlayersUpdate);
 
 		socket.emit("enter_game", gameId);
@@ -22,10 +26,6 @@ export default function () {
 			socket.emit("leave_game", gameId);
 		};
 	}, [socket]);
-
-	function onPlayersUpdate(players) {
-		setPlayers(players);
-	}
 
 	function copyUrl(event) {
 		navigator.clipboard.writeText(event.currentTarget.textContent).then(() => {

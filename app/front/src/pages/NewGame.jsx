@@ -11,6 +11,10 @@ export default function () {
 
 	const socket = useWebsocket();
 	useEffect(() => {
+		async function onGameCreated(gameId) {
+			navigate(`/games/${gameId}`, { replace: true });
+		}
+
 		socket.emit("create_game");
 
 		socket.on("game_created", onGameCreated);
@@ -19,10 +23,6 @@ export default function () {
 			socket.off("game_created", onGameCreated);
 		};
 	}, [socket]);
-
-	async function onGameCreated(gameId) {
-		navigate(`/games/${gameId}`, { replace: true });
-	}
 
 	// async function submitForm(event) {
 	// 	event.preventDefault();
