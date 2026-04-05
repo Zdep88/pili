@@ -5,26 +5,28 @@ import { game } from "#controllers";
 let io;
 
 export default {
-	init: (server) => {
+	init: (httpServer) => {
 		if (io !== undefined) {
 			throw new Error("Socketio must only be initialized once.");
 		}
 
-		io = new Server(server, {
+		io = new Server(httpServer, {
 			cors: { origin: "*" },
 			connectionStateRecovery: {},
 		});
+
 		io.on("connection", onConnection);
-		io.of("/").adapter.on("join-room", (room, id) => {
-			console.log(`socket ${id} has joined room ${room}`);
+
+		io.of("/").adapter.on("join-room", (roomId, socketId) => {
+			console.log(`socket ${socketId} has joined room ${roomId}`);
 		});
-		io.of("/").adapter.on("leave-room", (room, id) => {
-			console.log(`socket ${id} has left room ${room}`);
+		io.of("/").adapter.on("leave-room", async (roomId, socketId) => {
+			console.log(`socket ${socketId} has left room ${roomId}`);
 
-			const username = id;
+			if (roomId !== "hall") {
+				const players = (await io.in(roomId).fetchSockets()).map((s) => s.id);
 
-			if (room !== "hall") {
-				io.to(room).emit("user_leave", { username });
+				io.to(roomId).emit("players_update", { players });
 			}
 		});
 
@@ -66,27 +68,28 @@ function onConnection(socket) {
 
 		const games = await game.getAll();
 
-		socket.emit("games_list", { games });
+		socket.emit("game_list_update", { games });
 
 		return;
 	}
 
-	async function onEnterRoom({ room }) {
+	async function onEnterRoom({ roomId }) {
 		socket.leave("hall");
-		socket.join(room);
+		socket.join(roomId);
 
-		const username = socket.id;
+		const players = (await io.in(roomId).fetchSockets()).map((s) => s.id);
 
-		io.to(room).emit("user_join", { username });
+		io.to(roomId).emit("players_update", { players });
 
 		return;
 	}
 
-	async function onLeaveRoom({ room }) {
-		socket.leave(room);
+	async function onLeaveRoom({ roomId }) {
+		socket.leave(roomId);
 
-		const username = socket.id; //! à changer
-		io.to(room).emit("user_leave", { username });
+		const players = (await io.in(roomId).fetchSockets()).map((s) => s.id);
+
+		io.to(roomId).emit("players_update", { players });
 
 		return;
 	}

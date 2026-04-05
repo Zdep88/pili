@@ -18,7 +18,7 @@ const controller = {
 		const games = await controller.getAll();
 
 		const io = socketio.io();
-		io.to("hall").emit("games_list", { games });
+		io.to("hall").emit("game_list_update", { games });
 
 		res.status(200).json({
 			created: true,

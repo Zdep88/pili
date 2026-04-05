@@ -11,16 +11,16 @@ export default function () {
 	const socket = useWebsocket();
 
 	useEffect(() => {
-		socket.on("games_list", onGameList);
+		socket.on("game_list_update", onGameListUpdate);
 
 		socket.emit("enter_hall");
 
 		return () => {
-			socket.off("games_list", onGameList);
+			socket.off("game_list_update", onGameListUpdate);
 		};
 	}, [socket]);
 
-	function onGameList({ games }) {
+	function onGameListUpdate({ games }) {
 		console.log("game list updated");
 		setRooms(games);
 	}

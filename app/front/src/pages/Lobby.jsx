@@ -12,27 +12,19 @@ export default function () {
 	const socket = useWebsocket();
 
 	useEffect(() => {
-		socket.on("user_join", onUserJoin);
-		socket.on("user_leave", onUserLeave);
+		socket.on("players_update", onPlayersUpdate);
 
-		socket.emit("enter_room", { room: roomId });
+		socket.emit("enter_room", { roomId });
 
 		return () => {
-			socket.emit("leave_room", { room: roomId });
+			socket.off("players_update", onPlayersUpdate);
 
-			socket.off("user_join", onUserJoin);
-			socket.off("user_leave", onUserLeave);
+			socket.emit("leave_room", { roomId });
 		};
 	}, [socket]);
 
-	function onUserJoin({ username }) {
-		console.log(username, "joined lobby");
-		setPlayers((players) => [...players, username]);
-	}
-
-	function onUserLeave({ username }) {
-		console.log(username, "left lobby");
-		setPlayers((players) => players.filter((player) => player !== username));
+	function onPlayersUpdate({ players }) {
+		setPlayers(players);
 	}
 
 	function copyUrl(event) {
@@ -52,7 +44,7 @@ export default function () {
 
 			<ul className="player-list">
 				{players.map((player) => (
-					<li key="player">{player}</li>
+					<li key={player}>{player}</li>
 				))}
 			</ul>
 		</>
