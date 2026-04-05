@@ -17,6 +17,8 @@ export default function () {
 
 		return () => {
 			socket.off("game_list_update", onGameListUpdate);
+
+			socket.emit("leave_hall");
 		};
 	}, [socket]);
 

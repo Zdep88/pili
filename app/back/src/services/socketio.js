@@ -42,6 +42,7 @@ function onConnection(socket) {
 	}
 
 	socket.on("enter_hall", onEnterHall);
+	socket.on("leave_hall", onLeaveHall);
 	socket.on("enter_game", onEnterGame);
 	socket.on("player_status_change", onPlayerStatusChange);
 	socket.on("leave_game", onLeaveGame);
@@ -54,6 +55,14 @@ function onConnection(socket) {
 
 			const gameList = await gameController.getAll();
 			socket.emit("game_list_update", gameList);
+		}
+
+		return;
+	}
+
+	async function onLeaveHall() {
+		if (socket.rooms.has("hall")) {
+			socket.leave("hall");
 		}
 
 		return;
@@ -95,6 +104,8 @@ function onConnection(socket) {
 
 async function onJoinRoom(roomId, socketId) {
 	// console.log(`socket ${socketId} has joined room ${roomId}`);
+
+	return;
 }
 
 async function onLeaveRoom(roomId, socketId) {
@@ -109,4 +120,6 @@ async function onLeaveRoom(roomId, socketId) {
 		const { players } = await gameController.getOne(gameId);
 		io.to(`game-${gameId}`).emit("players_update", players);
 	}
+
+	return;
 }
