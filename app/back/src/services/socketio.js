@@ -1,6 +1,6 @@
 import { Server } from "socket.io";
 
-import { game } from "#controllers";
+import { game as gameController, player as playerController } from "#controllers";
 
 let io;
 
@@ -16,19 +16,8 @@ export default {
 		});
 
 		io.on("connection", onConnection);
-
-		io.of("/").adapter.on("join-room", (roomId, socketId) => {
-			console.log(`socket ${socketId} has joined room ${roomId}`);
-		});
-		io.of("/").adapter.on("leave-room", async (roomId, socketId) => {
-			console.log(`socket ${socketId} has left room ${roomId}`);
-
-			if (roomId !== "hall") {
-				const players = (await io.in(roomId).fetchSockets()).map((s) => s.id);
-
-				io.to(roomId).emit("players_update", { players });
-			}
-		});
+		io.of("/").adapter.on("join-room", onJoinRoom);
+		io.of("/").adapter.on("leave-room", onLeaveRoom);
 
 		return io;
 	},
@@ -45,52 +34,79 @@ export default {
 function onConnection(socket) {
 	socket.join(socket.request.session.id);
 	//? on inscrit le socket dans un salon nommé d'après son sessionId, pour pouvoir le déconnecter plus tard même sans le socket
-	console.log("a user connected:", socket.id);
 
-	socket.on("ping", onPing);
-	socket.on("enter_hall", onEnterHall);
-	socket.on("enter_room", onEnterRoom);
-	socket.on("leave_room", onLeaveRoom);
-
-	socket.on("disconnect", () => {
-		console.log("a user disconnected:", socket.id);
-	});
-
-	function onPing() {
-		console.log("ping !");
-		socket.emit("pong");
-
-		return;
+	if (process.env.NODE_ENV === "development") {
+		socket.onAny((event, ...args) => {
+			console.log("event received:", event, args, socket.id);
+		});
 	}
+
+	socket.on("enter_hall", onEnterHall);
+	socket.on("enter_game", onEnterGame);
+	socket.on("player_status_change", onPlayerStatusChange);
+	socket.on("leave_game", onLeaveGame);
+
+	socket.on("disconnect", () => {});
 
 	async function onEnterHall() {
-		socket.join("hall");
+		if (!socket.rooms.has("hall")) {
+			socket.join("hall");
 
-		const games = await game.getAll();
-
-		socket.emit("game_list_update", { games });
-
-		return;
-	}
-
-	async function onEnterRoom({ roomId }) {
-		socket.leave("hall");
-		socket.join(roomId);
-
-		const players = (await io.in(roomId).fetchSockets()).map((s) => s.id);
-
-		io.to(roomId).emit("players_update", { players });
+			const gameList = await gameController.getAll();
+			socket.emit("game_list_update", gameList);
+		}
 
 		return;
 	}
 
-	async function onLeaveRoom({ roomId }) {
-		socket.leave(roomId);
+	async function onEnterGame(gameId) {
+		if (!socket.rooms.has(`game-${gameId}`)) {
+			if (socket.rooms.has("hall")) {
+				socket.leave("hall");
+			}
 
-		const players = (await io.in(roomId).fetchSockets()).map((s) => s.id);
+			socket.join(`game-${gameId}`);
+			await playerController.join(socket.id, gameId);
 
-		io.to(roomId).emit("players_update", { players });
+			const { players } = await gameController.getOne(gameId);
+			io.to(`game-${gameId}`).emit("players_update", players);
+		}
 
 		return;
+	}
+
+	async function onPlayerStatusChange(isReady) {
+		//! change isReady in database
+	}
+
+	async function onLeaveGame(gameId) {
+		if (socket.rooms.has(`game-${gameId}`)) {
+			socket.leave(`game-${gameId}`);
+
+			await playerController.leave(socket.id, gameId);
+
+			const { players } = await gameController.getOne(gameId);
+			io.to(`game-${gameId}`).emit("players_update", players);
+		}
+
+		return;
+	}
+}
+
+async function onJoinRoom(roomId, socketId) {
+	// console.log(`socket ${socketId} has joined room ${roomId}`);
+}
+
+async function onLeaveRoom(roomId, socketId) {
+	// console.log(`socket ${socketId} has left room ${roomId}`);
+
+	if (roomId.startsWith("game-")) {
+		const gameId = roomId.slice(5);
+		const playerId = socketId;
+
+		await playerController.leave(playerId, gameId);
+
+		const { players } = await gameController.getOne(gameId);
+		io.to(`game-${gameId}`).emit("players_update", players);
 	}
 }

@@ -15,17 +15,38 @@
 	}
 }
 
-.player-list {
-	background-color: pink;
-	border-radius: 5px;
-	height: 500px;
-	min-width: 200px;
-	list-style: none;
-	padding: 4px;
-	margin: 0;
+.columns {
+	display: flex;
+	gap: 2em;
 
-	li {
-		padding: 0.4em 1em;
-		background-color: white;
+	> * {
+		display: flex;
+		flex-direction: column;
+		gap: 2em;
+	}
+
+	.player-list {
+		background-color: pink;
+		border-radius: 5px;
+		height: 500px;
+		min-width: 200px;
+		list-style: none;
+		padding: 4px;
+		margin: 0;
+
+		li {
+			padding: 0.4em 1em;
+			background-color: white;
+		}
+	}
+
+	button[data-ready="true"] {
+		background: linear-gradient(145deg, #597726, var(--lime-zest));
+	}
+
+	.options {
+		background-color: skyblue;
+		height: 300px;
+		width: 200px;
 	}
 }

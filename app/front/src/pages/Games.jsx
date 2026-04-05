@@ -20,9 +20,8 @@ export default function () {
 		};
 	}, [socket]);
 
-	function onGameListUpdate({ games }) {
-		console.log("game list updated");
-		setRooms(games);
+	function onGameListUpdate(gameList) {
+		setRooms(gameList);
 	}
 
 	function Room({ url, name, players }) {
@@ -48,7 +47,7 @@ export default function () {
 				{rooms.map((room) => {
 					const url = `/games/${room.id}`;
 					const name = room.name !== undefined ? room.name : `Room #${room.id}`;
-					const players = `${room.players}/${room.max}`;
+					const players = `${room.players.length}/${room.max}`;
 
 					return <Room key={room.id} url={url} name={name} players={players} />;
 				})}

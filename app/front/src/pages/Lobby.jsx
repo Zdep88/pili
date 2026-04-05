@@ -5,25 +5,26 @@ import { useWebsocket } from "hooks";
 import "styles/lobby.css";
 
 export default function () {
-	const roomId = window.location.href.split("/").at(-1);
+	const gameId = window.location.href.split("/").at(-1);
 
 	const [players, setPlayers] = useState([]);
+	const [ready, setReady] = useState(false);
 
 	const socket = useWebsocket();
 
 	useEffect(() => {
 		socket.on("players_update", onPlayersUpdate);
 
-		socket.emit("enter_room", { roomId });
+		socket.emit("enter_game", gameId);
 
 		return () => {
 			socket.off("players_update", onPlayersUpdate);
 
-			socket.emit("leave_room", { roomId });
+			socket.emit("leave_game", gameId);
 		};
 	}, [socket]);
 
-	function onPlayersUpdate({ players }) {
+	function onPlayersUpdate(players) {
 		setPlayers(players);
 	}
 
@@ -31,6 +32,11 @@ export default function () {
 		navigator.clipboard.writeText(event.currentTarget.textContent).then(() => {
 			alert("Lien copié dans le presse-papiers");
 		});
+	}
+
+	function toggleReady() {
+		setReady(!ready);
+		socket.emit("player_status_change", ready);
 	}
 
 	return (
@@ -42,11 +48,24 @@ export default function () {
 				</span>
 			</div>
 
-			<ul className="player-list">
-				{players.map((player) => (
-					<li key={player}>{player}</li>
-				))}
-			</ul>
+			<div className="columns">
+				<div>
+					<h3>Joueurs</h3>
+					<ul className="player-list">
+						{players.map((player) => (
+							<li key={player.id}>{player.username}</li>
+						))}
+					</ul>
+				</div>
+
+				<div>
+					<button onClick={toggleReady} data-ready={ready}>
+						Je {ready ? "suis" : "ne suis pas"} prêt(e)
+					</button>
+					<div className="options"></div>
+					<button>Quitter la partie</button>
+				</div>
+			</div>
 		</>
 	);
 }
