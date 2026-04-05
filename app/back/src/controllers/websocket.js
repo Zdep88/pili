@@ -1,4 +1,4 @@
-import { game, game as gameController, player as playerController } from "#controllers";
+import { game as gameController, player as playerController } from "#controllers";
 
 export default (io, socket) => ({
 	async enterHall() {
@@ -35,7 +35,14 @@ export default (io, socket) => ({
 	async enterGame(gameId) {
 		socket.leave("hall");
 
-		socket.join(`game-${gameId}`);
+		const game = await gameController.getOne(gameId);
+		if (game === undefined) {
+			socket.emit("enter_error");
+		} else {
+			socket.emit("welcome");
+
+			socket.join(`game-${gameId}`);
+		}
 
 		return;
 	},

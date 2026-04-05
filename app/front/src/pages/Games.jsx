@@ -12,7 +12,6 @@ export default function () {
 	useEffect(() => {
 		function onGameListUpdate(gameList) {
 			setRooms(gameList);
-			console.log("game list updated");
 		}
 
 		socket.on("game_list_update", onGameListUpdate);
