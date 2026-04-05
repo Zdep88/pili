@@ -46,8 +46,7 @@ function onConnection(socket) {
 	socket.on("enter_game", onEnterGame);
 	socket.on("player_status_change", onPlayerStatusChange);
 	socket.on("leave_game", onLeaveGame);
-
-	socket.on("disconnect", () => {});
+	socket.on("disconnect", onDisconnect);
 
 	async function onEnterHall() {
 		if (!socket.rooms.has("hall")) {
@@ -97,6 +96,12 @@ function onConnection(socket) {
 			const { players } = await gameController.getOne(gameId);
 			io.to(`game-${gameId}`).emit("players_update", players);
 		}
+
+		return;
+	}
+
+	async function onDisconnect(reason) {
+		console.log(`socket ${socket.id} disconnected: ${reason}`);
 
 		return;
 	}
