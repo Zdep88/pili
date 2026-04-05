@@ -1,30 +1,48 @@
-import { socketio } from "#services";
 import { errorHandler } from "#controllers";
+import { socketio } from "#services";
 
-const controller = {
-	getAll: async () => {
-		const rooms = [
-			{ id: 58462, name: "Les noobasses", private: false, players: 6, max: 8 },
-			{ id: 79001, name: "Brelan !", private: true, players: 2, max: 3 },
-			{ id: 13909, name: undefined, private: false, players: 1, max: 4 },
-		]; //! à remplacer par résultats bdd
+const fakeGameController = {
+	list: [
+		{ id: "58462", name: "Les noobasses", isPrivate: false, max: 8, players: [] },
+		{ id: "79001", name: "Brelan !", isPrivate: true, max: 3, players: [] },
+		{ id: "13909", name: undefined, isPrivate: false, max: 4, players: [] },
+	],
 
-		return rooms;
+	async getOne(gameId) {
+		return this.list.find((g) => g.id === gameId);
 	},
 
-	create: async (req, res, next) => {
-		//! création bdd à faire
+	async getAll() {
+		return [...this.list];
+	},
 
-		const games = await controller.getAll();
+	async create(properties) {
+		properties.id = Math.floor(Math.random() * 100000);
+		properties.players = [];
+		this.list.push(properties);
 
 		const io = socketio.io();
-		io.to("hall").emit("game_list_update", { games });
+		io.to("hall").emit("game_list_update", this.list);
 
-		res.status(200).json({
-			created: true,
-			id: 11789,
-		});
+		return;
+	},
+
+	async update(gameId, properties) {
+		const index = this.list.findIndex((g) => g.id === gameId);
+		properties.id = gameId;
+		this.list[index] = properties;
+
+		const io = socketio.io();
+		io.to("hall").emit("game_list_update", this.list);
+
+		return;
+	},
+
+	async delete(gameId) {
+		this.list = this.list.filter((g) => g.id !== gameId);
+
+		return;
 	},
 };
 
-export default controller;
+export default fakeGameController;
