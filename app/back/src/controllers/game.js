@@ -1,11 +1,38 @@
-import { errorHandler } from "#controllers";
 import { socketio } from "#services";
+import { errorHandler, player as playerController } from "#controllers";
 
 const fakeGameController = {
 	list: [
-		{ id: "58462", name: "Les noobasses", isPrivate: false, max: 8, players: [] },
-		{ id: "79001", name: "Brelan !", isPrivate: true, max: 3, players: [] },
-		{ id: "13909", name: undefined, isPrivate: false, max: 4, players: [] },
+		{
+			id: "58462",
+			owner: {
+				id: "1",
+				username: "Nicoco",
+			},
+			isPrivate: false,
+			max: 8,
+			players: [],
+		},
+		{
+			id: "79001",
+			owner: {
+				id: "2",
+				username: "Tibal",
+			},
+			isPrivate: true,
+			max: 3,
+			players: [],
+		},
+		{
+			id: "13909",
+			owner: {
+				id: "3",
+				username: "Cricri",
+			},
+			isPrivate: false,
+			max: 4,
+			players: [],
+		},
 	],
 
 	async getOne(gameId) {
@@ -16,15 +43,21 @@ const fakeGameController = {
 		return [...this.list];
 	},
 
-	async create(properties) {
-		properties.id = Math.floor(Math.random() * 100000);
-		properties.players = [];
-		this.list.push(properties);
+	async create() {
+		const id = Math.floor(Math.random() * 100000).toString();
+		const owner = playerController.list[3];
+		this.list.push({
+			id,
+			isPrivate: true,
+			max: 8,
+			owner,
+			players: [],
+		});
 
 		const io = socketio.io();
 		io.to("hall").emit("game_list_update", this.list);
 
-		return;
+		return id;
 	},
 
 	async update(gameId, properties) {

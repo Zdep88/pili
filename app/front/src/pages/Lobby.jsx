@@ -11,7 +11,6 @@ export default function () {
 	const [ready, setReady] = useState(false);
 
 	const socket = useWebsocket();
-
 	useEffect(() => {
 		socket.on("players_update", onPlayersUpdate);
 

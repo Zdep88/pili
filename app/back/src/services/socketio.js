@@ -43,13 +43,14 @@ function onConnection(socket) {
 
 	socket.on("enter_hall", onEnterHall);
 	socket.on("leave_hall", onLeaveHall);
+	socket.on("create_game", onCreateGame);
 	socket.on("enter_game", onEnterGame);
 	socket.on("player_status_change", onPlayerStatusChange);
 	socket.on("leave_game", onLeaveGame);
 	socket.on("disconnect", onDisconnect);
 
 	async function onEnterHall() {
-		if (!socket.rooms.has("hall")) {
+		if (!isInHall(socket)) {
 			socket.join("hall");
 
 			const gameList = await gameController.getAll();
@@ -60,16 +61,26 @@ function onConnection(socket) {
 	}
 
 	async function onLeaveHall() {
-		if (socket.rooms.has("hall")) {
+		if (isInHall(socket)) {
 			socket.leave("hall");
 		}
 
 		return;
 	}
 
+	async function onCreateGame() {
+		if (!isInAnyGame(socket)) {
+			const gameId = await gameController.create();
+
+			socket.emit("game_created", gameId);
+		}
+
+		return;
+	}
+
 	async function onEnterGame(gameId) {
-		if (!socket.rooms.has(`game-${gameId}`)) {
-			if (socket.rooms.has("hall")) {
+		if (!isInGame(socket, gameId)) {
+			if (isInHall(socket)) {
 				socket.leave("hall");
 			}
 
@@ -88,7 +99,7 @@ function onConnection(socket) {
 	}
 
 	async function onLeaveGame(gameId) {
-		if (socket.rooms.has(`game-${gameId}`)) {
+		if (isInGame(socket, gameId)) {
 			socket.leave(`game-${gameId}`);
 
 			await playerController.leave(socket.id, gameId);
@@ -127,4 +138,14 @@ async function onLeaveRoom(roomId, socketId) {
 	}
 
 	return;
+}
+
+function isInHall(socket) {
+	return socket.rooms.has("hall");
+}
+function isInAnyGame(socket) {
+	return [...socket.rooms].find((r) => r.startsWith("game-")) !== undefined;
+}
+function isInGame(socket, gameId) {
+	return socket.rooms.has(`game-${gameId}`);
 }

@@ -9,7 +9,6 @@ export default function () {
 	const [rooms, setRooms] = useState([]);
 
 	const socket = useWebsocket();
-
 	useEffect(() => {
 		socket.on("game_list_update", onGameListUpdate);
 
@@ -48,7 +47,7 @@ export default function () {
 
 				{rooms.map((room) => {
 					const url = `/games/${room.id}`;
-					const name = room.name !== undefined ? room.name : `Room #${room.id}`;
+					const name = `Partie de ${room.owner.username}`;
 					const players = `${room.players.length}/${room.max}`;
 
 					return <Room key={room.id} url={url} name={name} players={players} />;

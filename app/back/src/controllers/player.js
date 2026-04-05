@@ -1,7 +1,24 @@
 import { errorHandler, game as gameController } from "#controllers";
 
 const fakePlayerController = {
-	list: [],
+	list: [
+		{
+			id: "1",
+			username: "Nicoco",
+		},
+		{
+			id: "2",
+			username: "Tibal",
+		},
+		{
+			id: "3",
+			username: "Cricri",
+		},
+		{
+			id: "4",
+			username: "Valou",
+		},
+	],
 
 	async getOne(playerId) {
 		return this.find((p) => p.id === playerId);
