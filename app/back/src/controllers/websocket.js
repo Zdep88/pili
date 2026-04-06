@@ -1,8 +1,43 @@
 import { game as gameController, player as playerController } from "#controllers";
 
-export default (io, socket) => ({
-	async enterHall() {
+/**
+ * Ne pas confondre :
+ *
+ * socketId     id du socket Socket.io
+ * playerId     id du record Player dans la bdd
+ *
+ * roomId       id de la room Socket.io
+ * gameId       id du record Game dans la bdd
+ *
+ */
+
+async function updateHall(io) {
+	const gameList = await gameController.getAll();
+
+	io.to("hall").emit("game_list_update", gameList);
+}
+
+function deleteGameIfEmpty(io, gameId) {
+	//? on supprime la game si elle est vide après un délai (pour éviter de trigger entre deux montages de composants React)
+	setTimeout(async () => {
+		try {
+			await gameController.delete(gameId);
+		} catch (error) {
+			console.error(error.message);
+		} finally {
+			updateHall(io);
+		}
+	}, 200);
+}
+
+const controller = (io, socket) => ({
+	enterHall: async function () {
+		const socketId = socket.id;
+
 		socket.join("hall");
+
+		const gameList = await gameController.getAll();
+		io.to(socketId).emit("game_list_update", gameList);
 
 		return;
 	},
@@ -14,34 +49,47 @@ export default (io, socket) => ({
 	},
 
 	async createGame() {
-		const gameId = await gameController.create();
+		const owner = socket.request.session.user;
 
-		socket.emit("game_created", gameId);
+		try {
+			const gameId = await gameController.create(owner);
 
-		setTimeout(async () => {
-			const { players } = await gameController.getOne(gameId);
-			if (players.length === 0) {
-				await gameController.delete(gameId);
-				console.log(`room deleted: ${gameId}`);
+			socket.emit("game_created", gameId);
 
-				const gameList = await gameController.getAll();
-				io.to("hall").emit("game_list_update", gameList);
-			}
-		}, 200); //? on supprime la game si elle est vide après un délai (pour éviter de trigger entre deux montages de composants React)
+			deleteGameIfEmpty(io, gameId);
+		} catch (error) {
+			console.error(error.message);
+
+			socket.emit("game_creation_error");
+		}
 
 		return;
 	},
 
 	async enterGame(gameId) {
-		socket.leave("hall");
+		const roomId = `game-${gameId}`;
+		const playerId = socket.request.session.user?.id;
 
-		const game = await gameController.getOne(gameId);
-		if (game === undefined) {
-			socket.emit("enter_error");
-		} else {
-			socket.emit("welcome");
+		if (playerId === undefined) {
+			// not logged
+			//! à faire
+		}
 
-			socket.join(`game-${gameId}`);
+		try {
+			await playerController.join(gameId, playerId);
+
+			socket.join(roomId);
+
+			socket.emit("enter_game_success");
+
+			const { players } = await gameController.getOne(gameId);
+			io.to(roomId).emit("players_update", players);
+
+			updateHall(io);
+		} catch (error) {
+			console.error(error.message);
+
+			socket.emit("enter_game_error");
 		}
 
 		return;
@@ -52,7 +100,33 @@ export default (io, socket) => ({
 	},
 
 	async leaveGame(gameId) {
-		socket.leave(`game-${gameId}`);
+		const roomId = `game-${gameId}`;
+		const playerId = socket.request.session.user?.id;
+
+		try {
+			await playerController.leave(playerId, gameId);
+
+			socket.leave(roomId);
+
+			const { players } = await gameController.getOne(gameId);
+			io.to(roomId).emit("players_update", players);
+
+			deleteGameIfEmpty(io, gameId);
+		} catch (error) {
+			console.error(error.message);
+		}
+	},
+
+	disconnecting: async () => {
+		for (const roomId of socket.rooms) {
+			if (roomId === "hall") {
+				await controller(io, socket).leaveHall();
+			} else if (roomId.startsWith("game-")) {
+				const gameId = roomId.slice(5);
+
+				await controller(io, socket).leaveGame(gameId);
+			}
+		}
 
 		return;
 	},
@@ -62,53 +136,6 @@ export default (io, socket) => ({
 
 		return;
 	},
-
-	async joinRoom(roomId, socketId) {
-		if (roomId === "hall") {
-			const gameList = await gameController.getAll();
-			io.to(socketId).emit("game_list_update", gameList);
-		} else if (roomId.startsWith("game-")) {
-			const gameId = roomId.slice(5);
-
-			await playerController.join(socketId, gameId);
-
-			const { players } = await gameController.getOne(gameId);
-			io.to(`game-${gameId}`).emit("players_update", players);
-
-			const gameList = await gameController.getAll();
-			io.to("hall").emit("game_list_update", gameList);
-		}
-
-		return;
-	},
-
-	async leaveRoom(roomId, socketId) {
-		if (roomId === "hall") {
-			// ...
-		} else if (roomId.startsWith("game-")) {
-			const gameId = roomId.slice(5);
-			const playerId = socketId;
-
-			await playerController.leave(playerId, gameId);
-
-			const { players } = await gameController.getOne(gameId);
-			io.to(`game-${gameId}`).emit("players_update", players);
-
-			const gameList = await gameController.getAll();
-			io.to("hall").emit("game_list_update", gameList);
-
-			setTimeout(async () => {
-				const { players } = await gameController.getOne(gameId);
-				if (players.length === 0) {
-					await gameController.delete(gameId);
-					console.log(`room deleted: ${gameId}`);
-
-					const gameList = await gameController.getAll();
-					io.to("hall").emit("game_list_update", gameList);
-				}
-			}, 200); //? on supprime la game si elle est vide après un délai (pour éviter de trigger entre deux montages de composants React)
-		}
-
-		return;
-	},
 });
+
+export default controller;

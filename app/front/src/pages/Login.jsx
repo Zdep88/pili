@@ -24,6 +24,8 @@ export default function () {
 
 	return (
 		<>
+			<title>Pili – Connexion</title>
+
 			<section className="login-card" aria-labelledby="login-title">
 				<p className="eyebrow">Bienvenue</p>
 				<h1 id="login-title">Connexion</h1>

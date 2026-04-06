@@ -1,5 +1,4 @@
-import { socketio } from "#services";
-import { errorHandler, player as playerController } from "#controllers";
+import { errorHandler } from "#controllers";
 
 const fakeGameController = {
 	list: [
@@ -10,6 +9,7 @@ const fakeGameController = {
 				username: "Nicoco",
 			},
 			isPrivate: false,
+			isStarted: false,
 			max: 8,
 			players: [],
 		},
@@ -20,6 +20,7 @@ const fakeGameController = {
 				username: "Tibal",
 			},
 			isPrivate: true,
+			isStarted: false,
 			max: 3,
 			players: [],
 		},
@@ -30,48 +31,87 @@ const fakeGameController = {
 				username: "Cricri",
 			},
 			isPrivate: false,
+			isStarted: false,
 			max: 4,
 			players: [],
 		},
 	],
 
 	async getOne(gameId) {
-		return this.list.find((g) => g.id === gameId);
+		const game = this.list.find((g) => g.id === gameId);
+
+		if (game === undefined) {
+			throw new Error(`Cannot get a Game (#${gameId}) that does not exist`);
+		}
+
+		return game;
 	},
 
 	async getAll() {
 		return [...this.list];
 	},
 
-	async create() {
-		const id = Math.floor(Math.random() * 100000).toString();
-		const owner = playerController.list[3];
+	async create(owner) {
+		const playerId = owner.id;
+
+		const gameWithSameOwner = this.list.find((g) => g.owner.id === playerId);
+
+		if (gameWithSameOwner !== undefined) {
+			throw new Error(
+				`A Player (#${playerId}) cannot create if they already own a Game (#${gameWithSameOwner.id})`,
+			);
+		}
+
+		let gameId;
+		do {
+			gameId = Math.floor(Math.random() * 100000).toString();
+		} while (this.list.find((g) => g.id === gameId) !== undefined);
+
 		this.list.push({
-			id,
+			id: gameId,
 			isPrivate: true,
+			isStarted: false,
 			max: 8,
 			owner,
 			players: [],
 		});
 
-		const io = socketio.io();
-		io.to("hall").emit("game_list_update", this.list);
-
-		return id;
+		return gameId;
 	},
 
 	async update(gameId, properties) {
-		const index = this.list.findIndex((g) => g.id === gameId);
-		properties.id = gameId;
-		this.list[index] = properties;
+		const game = this.list.find((g) => g.id === gameId);
 
-		const io = socketio.io();
-		io.to("hall").emit("game_list_update", this.list);
+		if (game === undefined) {
+			throw new Error(`Cannot update a Game (#${gameId}) that does not exist`);
+		}
+
+		for (const [key, value] of Object.entries(properties)) {
+			if (key === "id") {
+				continue;
+			}
+
+			game[key] = value;
+		}
 
 		return;
 	},
 
 	async delete(gameId) {
+		const game = this.list.find((g) => g.id === gameId);
+
+		if (game === undefined) {
+			throw new Error(`Cannot delete a Game (#${gameId}) that does not exist`);
+		}
+
+		if (game.isStarted) {
+			throw new Error(`Cannot delete a Game (#${gameId}) that is started`);
+		}
+
+		if (game.players.length > 0) {
+			throw new Error(`Cannot delete a Game (#${gameId}) that still has players`);
+		}
+
 		this.list = this.list.filter((g) => g.id !== gameId);
 
 		return;

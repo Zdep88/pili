@@ -2,6 +2,17 @@
 	display: flex;
 	gap: 2rem;
 
+	> button {
+		background: none;
+		padding: 0;
+		box-shadow: none;
+		margin: 0;
+
+		&:hover {
+			filter: brightness(1);
+		}
+	}
+
 	.room {
 		display: flex;
 		flex-direction: column;

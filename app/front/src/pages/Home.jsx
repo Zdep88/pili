@@ -3,6 +3,8 @@ import { Image } from "components";
 export default function () {
 	return (
 		<>
+			<title>Pili</title>
+
 			<section className="home-card" aria-labelledby="home-title">
 				<p className="eyebrow">Univers Pili-Pili</p>
 				<h1 id="home-title">Bienvenue sur la page d'accueil</h1>
