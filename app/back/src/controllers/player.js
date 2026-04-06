@@ -110,7 +110,7 @@ const fakePlayerController = {
 		return;
 	},
 
-	async leave(playerId, gameId) {
+	async leave(gameId, playerId) {
 		const player = this.list.find((p) => p.id === playerId);
 
 		if (player === undefined) {

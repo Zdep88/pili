@@ -46,13 +46,15 @@ function onConnection(socket) {
 		});
 	}
 
+	// SocketIO default events
+	socket.on("disconnecting", websocketController(io, socket).disconnecting);
+	socket.on("disconnect", websocketController(io, socket).disconnect);
+
+	// Custom events
 	socket.on("enter_hall", websocketController(io, socket).enterHall);
 	socket.on("leave_hall", websocketController(io, socket).leaveHall);
 	socket.on("create_game", websocketController(io, socket).createGame);
 	socket.on("enter_game", websocketController(io, socket).enterGame);
 	socket.on("player_status_change", websocketController(io, socket).playerStatusChange);
 	socket.on("leave_game", websocketController(io, socket).leaveGame);
-
-	socket.on("disconnecting", websocketController(io, socket).disconnecting);
-	socket.on("disconnect", websocketController(io, socket).disconnect);
 }

@@ -104,7 +104,7 @@ const controller = (io, socket) => ({
 		const playerId = socket.request.session.user?.id;
 
 		try {
-			await playerController.leave(playerId, gameId);
+			await playerController.leave(gameId, playerId);
 
 			socket.leave(roomId);
 
