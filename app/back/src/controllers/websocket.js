@@ -8,7 +8,6 @@ import { game as gameController, player as playerController } from "#controllers
  *
  * roomId       id de la room Socket.io
  * gameId       id du record Game dans la bdd
- *
  */
 
 async function updateHall(io) {
@@ -49,10 +48,14 @@ const controller = (io, socket) => ({
 	},
 
 	async createGame() {
-		const owner = socket.request.session.user;
+		const player = socket.request.session.user;
+		if (player === undefined) {
+			// not logged
+			//! à faire
+		}
 
 		try {
-			const gameId = await gameController.create(owner);
+			const gameId = await gameController.create(player);
 
 			socket.emit("game_created", gameId);
 
@@ -67,13 +70,14 @@ const controller = (io, socket) => ({
 	},
 
 	async enterGame(gameId) {
-		const roomId = `game-${gameId}`;
-		const playerId = socket.request.session.user?.id;
-
-		if (playerId === undefined) {
+		const player = socket.request.session.user;
+		if (player === undefined) {
 			// not logged
 			//! à faire
 		}
+
+		const playerId = player.id;
+		const roomId = `game-${gameId}`;
 
 		try {
 			await playerController.join(gameId, playerId);
@@ -96,12 +100,35 @@ const controller = (io, socket) => ({
 	},
 
 	async playerStatusChange(isReady) {
-		//! change isReady in database
+		const player = socket.request.session.user;
+		if (player === undefined) {
+			// not logged
+			//! à faire
+		}
+
+		// const playerId = player.id;
+
+		// try {
+		// 	await playerController.update(playerId, { isReady });
+
+		// 	const game = await gameController.getByPlayer(playerId);
+		// 	const roomId = `game-${game.id}`;
+
+		// 	io.to(roomId).emit("players_update", game.players);
+		// } catch (error) {
+		// 	console.error(error.message);
+		// }
 	},
 
 	async leaveGame(gameId) {
+		const player = socket.request.session.user;
+		if (player === undefined) {
+			// not logged
+			//! à faire
+		}
+
 		const roomId = `game-${gameId}`;
-		const playerId = socket.request.session.user?.id;
+		const playerId = player.id;
 
 		try {
 			await playerController.leave(gameId, playerId);

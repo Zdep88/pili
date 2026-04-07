@@ -5,18 +5,22 @@ const fakePlayerController = {
 		{
 			id: "1",
 			username: "Nicoco",
+			isReady: false,
 		},
 		{
 			id: "2",
 			username: "Tibal",
+			isReady: false,
 		},
 		{
 			id: "3",
 			username: "Cricri",
+			isReady: false,
 		},
 		{
 			id: "4",
 			username: "Valou",
+			isReady: false,
 		},
 	],
 
@@ -44,6 +48,7 @@ const fakePlayerController = {
 		this.list.push({
 			id: playerId,
 			username: properties.username,
+			isReady: false,
 		});
 
 		return playerId;

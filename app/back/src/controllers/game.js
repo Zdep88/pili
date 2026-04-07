@@ -47,6 +47,16 @@ const fakeGameController = {
 		return game;
 	},
 
+	async getByPlayer(playerId) {
+		const game = this.list.find((g) => g.players.find((p) => p.id === playerId) !== undefined);
+
+		if (game === undefined) {
+			throw new Error(`Cannot find a Game with Player #${playerId} in it`);
+		}
+
+		return game;
+	},
+
 	async getAll() {
 		return [...this.list];
 	},

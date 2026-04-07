@@ -38,6 +38,7 @@ function onConnection(socket) {
 	socket.request.session.user = {
 		id: "4",
 		username: "Valou",
+		isReady: false,
 	}; //! à changer avec le login
 
 	if (process.env.NODE_ENV === "development") {

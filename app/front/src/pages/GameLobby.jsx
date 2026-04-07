@@ -53,6 +53,10 @@ export default function () {
 		socket.emit("player_status_change", ready);
 	}
 
+	function leaveGame() {
+		navigate("/games");
+	}
+
 	return (
 		<>
 			<title>{`Pili – Partie #${gameId}`}</title>
@@ -83,8 +87,6 @@ export default function () {
 
 							<div className="options">
 								<form>
-									<h2>Créer un salon</h2>
-
 									<div className="content">
 										{/* <fieldset>
 					<label className="required" htmlFor="create-room-name">
@@ -153,7 +155,7 @@ export default function () {
 								</form>
 							</div>
 
-							<button>Quitter la partie</button>
+							<button onClick={leaveGame}>Quitter la partie</button>
 						</div>
 					</div>
 				</>
