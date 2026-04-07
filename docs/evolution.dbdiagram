@@ -1,0 +1,25 @@
+// Use DBML to define your database structure
+// Docs: https://dbml.dbdiagram.io/docs
+
+Table Game {
+  id serial [primary key]
+  is_private boolean [not null, default: false]
+  is_started boolean [not null, default: false]
+  max integer [default: 8]
+}
+
+Table Player {
+  id serial [primary key]
+  username string [not null]
+}
+
+Table Plays_in {
+  game int [ref: - Game.id, primary key]
+  player int [ref: - Player.id, primary key]
+  is_ready boolean [not null, default: false]
+}
+
+Table Ownership {
+  game int [ref: - Game.id, primary key]
+  player int [ref: - Player.id]
+}
