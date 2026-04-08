@@ -2,8 +2,14 @@ import { errorHandler } from "#controllers";
 
 const authController = {
 	login: async (req, res) => {
-		if (!req.body || !req.body.name || !req.body.password) {
-			errorHandler.throw(400, "Bad Request");
+		if (!req.body) {
+			errorHandler.throw(400, "Missing request body");
+		}
+		if (!req.body.name) {
+			errorHandler.throw(400, "Missing mandatory field: name");
+		}
+		if (!req.body.password) {
+			errorHandler.throw(400, "Missing mandatory field: password");
 		}
 		const { name, password } = req.body;
 		const response = await fetch("https://zdep.fr/api/login", {

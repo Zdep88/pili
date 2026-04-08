@@ -25,16 +25,10 @@ app.use((req, res, next) => {
 });
 /* --- */
 
-app.use(express.static("app/public"));
+app.use(express.static("../front/dist"));
 app.use("/api", APIRouter);
 app.use((req, res) => {
-	if (process.env.NODE_ENV === "production") {
-		//! HTTP_301 n'est pas valide car le serveur sert normalement une page html. Ce n'est pas une redirection permanente d'une ressource qui existait à une précédente adresse vers une nouvelle adresse.
-		//? Je laisse pour le moment, au cas où Ultra en a besoin.
-		res.status(301).sendFile("index.html", { root: "../front/dist" });
-	} else {
-		res.set("Content-Type", "text/plain").send("Server opérationnel");
-	}
+	res.status(200).sendFile("index.html", { root: "../front/dist" });
 });
 
 server.listen(port, () => {
